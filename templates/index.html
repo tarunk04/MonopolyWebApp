@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Home Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src= '/static/scripts/jquery.min.js'></script>
+    <script src= '/static/scripts/socket.io.min.js'></script>
+    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+    <script src="main.js"></script> -->
+    <script>
+        var socket = io();
+
+        function getSocketObject(){
+            return socket;
+        }
+
+        socket.on('connect', function() {
+            socket.send(userName + ' has connected!');
+        });
+
+        socket.on('message', function(message){
+            console.log(message);
+        });
+
+        function getRndInteger(min, max) {
+            return Math.floor(Math.random() * (max - min + 1) ) + min;
+        }
+
+        var userName = 'player' + getRndInteger(100000,999999);
+        var host = false;
+        function submitUsername(){
+            userName = $("#username").val();
+            // console.log(userName);
+            socket.send(userName + ' has connected!');
+            $("#username").val('');
+        }
+
+        function switchToLobby(roomId){
+            console.log('Room created', roomId);
+            // window.location.replace('/rooms/'+roomId+'/');
+            document.getElementById('home').style.display="none";
+            document.getElementById('lobby').style.display="block";
+            document.getElementById('lobbyRoomid').innerText=roomId;
+            socket.emit('enter_lobby', roomId);
+        }
+        
+        function createRoom(){
+            roomId = getRndInteger(100000,999999);
+            host = true;
+            socket.emit('join',{'username':userName,'room':roomId, 'exists':0});
+            switchToLobby(roomId);
+        }
+
+        function joinRoom(){
+            roomId = $("#joinRoomId").val();
+            roomId = Number(roomId);
+            socket.emit('join',{'username':userName,'room':roomId, 'exists':1});
+            switchToLobby(roomId);
+        }
+
+
+        socket.on('modify_lobby',function(data){
+            modifiedHTML = 'Players in lobby: '
+            for(i in data){ modifiedHTML+= '<div>'+data[i]+'</div>';}
+            document.getElementById("users").innerHTML = modifiedHTML;
+            if (host)document.getElementById("lobby").getElementsByTagName("button")[0].style.display="block";
+            console.log('Players in lobby: '+data);
+        });
+
+        function cueToStart(){
+            socket.emit('cue_to_start', roomId);
+        }
+
+        socket.on('game_setup', function(data){
+            document.getElementById('lobby').style.display="none";
+            document.getElementById('board').style.display="block";
+            document.getElementById('boardRoomid').innerText=roomId;
+        });
+
+        
+        socket.on('game_data', function(data){
+            console.log('GAME SETUP: ',data);
+        });
+
+        socket.on('player_data', function(data){
+            console.log('PLAYER SETUP: ',data);
+        });
+
+    </script>
+</head>
+<body>
+    <h1>Monopoly</h1>
+    <div id="home">
+            <div>
+                    <input id="username" type="text">
+                    <button onclick="submitUsername()">Submit Username</button>
+                </div>
+            
+                <div>
+                    <div>
+                        <h2>Join Room</h2>
+                        <input id="joinRoomId" type="text">
+                        <button onclick="joinRoom()">Submit RoomId</button>
+                    </div>
+                    <div>
+                        <h2>Create Room</h2>
+                        <!-- <input type="text"> -->
+                        <button onclick="createRoom()">Generate RoomId</button>
+                    </div>
+                </div>
+    </div>
+
+    <div id="lobby" style="display: none;">
+        <h2>Room - <span id="lobbyRoomid"></span></h2>
+
+        <div id = "users">
+            
+        </div>
+    
+        <button onclick="cueToStart()" style="display:none;">Start Game</button>
+    </div>
+    
+    <div id="board" style="display:none;">
+        <h2>Room - <span id="boardRoomid"></span></h2>
+        <div id = "dealerPiles">
+            <div id="drawPile">
+                <h2>Draw Pile</h2>
+            </div>
+            <div id="playPile">
+                <h2>Play Pile</h2>
+            </div> 
+        </div>
+        <div id = "collection">
+            <div id="propertyCollection">
+                <h2>Property Collection</h2>
+            </div>
+            <div id="bankCollection">
+                <h2>Bank Collection</h2>
+            </div>
+        </div>
+        <div id = "handCards"></div>
+    
+    </div>
+    
+
+</body>
+</html>
