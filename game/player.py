@@ -14,7 +14,8 @@ class Players():
 
 class Player():
     def __init__(self, id):
-        # self.name = name
+        self.name = None
+        self.pRoomId = None
         self.id = 'U'+str(id)
         self.handCards = []
         self.exchangeBuffer = []
@@ -25,7 +26,7 @@ class Player():
         self.moneyValue = 0
         self.totalValue = 0
         self.chance = False
-        self.chanceNo = 1
+        self.chanceNo = -1
         self.initialisePropertyCollection()
 
     def hasWon(self):
@@ -123,7 +124,7 @@ class Player():
             if 'ADR' in [card.id for card in self.handCards]:
                 if int(input('Do you want to play double the rent? 1 for yes')):
                     doubleRentCard = [card for card in self.handCards if card.id=='ADR'][0]
-                    dealer.discardedCards.append(doubleRentCard)
+                    dealer.discardedCards.append(doubleRentCard.id)
                     self.handCards.remove(doubleRentCard)
                     self.chanceNo += 1
                     doubleRent = True
@@ -402,6 +403,7 @@ class Player():
             self.showBankCollection()        
         self.showHandCards()
         playIndex = int(input('Which card to Play? -1 to pass.'))
+        #TODO Take input from JS
         if playIndex == -1:
             return -1
 
@@ -410,7 +412,7 @@ class Player():
         else:
             self.handCards[playIndex].playCard(self)
         playedCard = self.handCards.pop(playIndex)
-        dealer.discardedCards.append(playedCard)
+        dealer.discardedCards.append(playedCard.id)
         self.showPropertyCollection()
         self.showBankCollection()
         return 0

@@ -79,13 +79,68 @@
             document.getElementById('boardRoomid').innerText=roomId;
         });
 
+        function playCard(element){
+            console.log(element.value);
+        }
+
         
         socket.on('game_data', function(data){
             console.log('GAME SETUP: ',data);
+            collectionHTML = '';
+
+            for(player in data['players']){
+                
+                propertyCollectionHTML = '<ul>';
+                for(set in data['players'][player]['property_collection']){
+                    thisSet = data['players'][player]['property_collection'][set];
+                    if(thisSet.length!= 0) 
+                    {
+                        propertyCollectionHTML+='<div>'+set+'</div>';
+                        propertyCollectionHTML+='<ol>';
+                        for(card in thisSet){
+                            propertyCollectionHTML+= '<li>'+thisSet[card]+'</li>'
+                        }
+                        propertyCollectionHTML+='</ol>';
+                    }
+                }
+                propertyCollectionHTML+= '</ul>';
+                bankCollectionHTML = '<ul>';
+                for(card in data['players'][player]['bank_collection']){
+                    bankCollectionHTML += '<li>'+data['players'][player]['bank_collection'][card]+'</li>';
+                }
+                bankCollectionHTML+= '</ul>';
+                collectionHTML+='<div>\
+                <div class="propertyCollection">\
+                <h2>'+data['players'][player]['username']+'</h2>\
+                    <h4>Property Collection</h4>\
+                    <div>' + propertyCollectionHTML + '</div>\
+                </div>\
+                <div class="bankCollection">\
+                    <h4>Bank Collection</h4>\
+                    <div>' +  bankCollectionHTML +                     
+                    '</div>\
+                </div>\
+            </div>';
+            }
+            $("#collection").html(collectionHTML);
+
         });
 
         socket.on('player_data', function(data){
             console.log('PLAYER SETUP: ',data);
+            var chance  = false;
+            if(data['chance'])
+            chance = true;
+            handCardHTML = '<h2>'+data['name']+'</h2><h4>Hand Card</h4><ul>';
+            for(card in data['handcards']){
+                handCardHTML += '<li>'+data['handcards'][card];
+                if(chance){
+                    handCardHTML+='<button onclick="playCard(this)" value="'+card+'">Play</button>';
+                }
+                handCardHTML+='</li>';
+            }
+            handCardHTML+= '</ul>';
+            $("#handCards").html(handCardHTML);
         });
 
     </script>
@@ -133,14 +188,11 @@
             </div> 
         </div>
         <div id = "collection">
-            <div id="propertyCollection">
-                <h2>Property Collection</h2>
-            </div>
-            <div id="bankCollection">
-                <h2>Bank Collection</h2>
-            </div>
+            
         </div>
-        <div id = "handCards"></div>
+        <div id = "handCards">
+            
+        </div>
     
     </div>
     

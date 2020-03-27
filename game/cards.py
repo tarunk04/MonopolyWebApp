@@ -212,4 +212,4 @@ class ActionCards(Cards):
             function = self.actionMapFunc(functionInitials)            
             player.__getattribute__(function)(players)
 
-        dealer.discardedCards.append(self)
+        dealer.discardedCards.append(self.id)
