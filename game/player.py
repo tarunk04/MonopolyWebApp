@@ -1,4 +1,5 @@
 from game.cards import PropertySet, MoneyCards, ActionCards
+from time import sleep
 
 class Players():
     def __init__(self, numPlayers):
@@ -396,13 +397,25 @@ class Player():
             removeIndex = int(input('Which Card to remove?'))
             drawPile.insert(0,self.handCards.pop(removeIndex)) 
 
-    def playCard(self,dealer = None, players= None,  card = None):
+    def playCard(self,socketio = None, dealer = None, players= None,  card = None):
         #TODO Automatically play the card specified and don't ask the user.
         if self.chanceNo == 1:
             self.showPropertyCollection()
             self.showBankCollection()        
         self.showHandCards()
-        playIndex = int(input('Which card to Play? -1 to pass.'))
+
+        playIndex =-2
+        def setValue(data):
+            nonlocal playIndex
+            playIndex = int(data['value'])
+            print(f'Received Value: {playIndex}')
+
+        socketio.emit('take_input',{},room=self.pRoomId, callback= setValue)
+        while playIndex==-2:
+            print('Waiting for input')
+            sleep(1)
+            continue
+        # playIndex = int(input('Which card to Play? -1 to pass.'))
         #TODO Take input from JS
         if playIndex == -1:
             return -1

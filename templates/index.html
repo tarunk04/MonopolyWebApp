@@ -78,11 +78,35 @@
             document.getElementById('board').style.display="block";
             document.getElementById('boardRoomid').innerText=roomId;
         });
-
+        var playIndex = -1;
         function playCard(element){
-            console.log(element.value);
+            playIndex = element.value;
+            console.log(playIndex);
         }
 
+        socket.on('take_input',function(data,callback){
+            $("#wait").css("display", "block");
+            // socket.send()
+        
+            var myVar = setInterval(myTimer, 1000);
+
+            function myTimer() {
+                console.log('Waiting for chance');
+                if(playIndex !=-1)
+                {
+                    clearInterval(myVar);
+                    choice = playIndex;
+                    console.log('Breaking out of loop');
+                    callback({'value':choice});
+                    playIndex = -1;
+                    $("#wait").css("display", "none");
+                }
+                else
+                console.log('Value still same');
+            }
+            
+            // return {'value':0};
+        });
         
         socket.on('game_data', function(data){
             console.log('GAME SETUP: ',data);
@@ -190,6 +214,7 @@
         <div id = "collection">
             
         </div>
+        <div id="wait" style="display: none;">Waiting for chance</div>
         <div id = "handCards">
             
         </div>
