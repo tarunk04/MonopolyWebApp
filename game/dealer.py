@@ -34,6 +34,7 @@ class Dealer():
 
     def initialisePropertyCards(self):
         return ['PBr']*2 + ['PDb']* 2 + ['PLg']*2 + ['PBl'] * 4 + ['POr']*3 + ['PRd'] * 3 + ['PDg'] * 3 + ['PPk'] * 3 + ['PYl'] * 3 + ['PLb'] * 3 
+        #Br - c87137ff, Db - 1919a6ff, Lb - 40c4ebff,  Lg - 00ff79ff , Dg - 17a537ff, Rd- ff0000ff, Yl- ffd42aff, Or- fa6b0bff , Pk - e84fe8ff , Bk - 
 
     def initialiseCards(self):
         self.drawPile = self.initialiseAllActionCards() + self.initialiseMoneyCards() + self.initialiseAllPropertyCards()

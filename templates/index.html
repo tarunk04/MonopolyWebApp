@@ -78,9 +78,15 @@
             document.getElementById('board').style.display="block";
             document.getElementById('boardRoomid').innerText=roomId;
         });
+
         var playIndex = -1;
-        function playCard(element){
-            playIndex = element.value;
+        function playCard(event){
+            element = event.target;
+            parent = element.parentElement;
+            playIndex = Number(element.value[0]);
+            if (element.value[1]=='A'){
+                parent.innerHTML=element.value.substr(1,)+'<button>Cash</button><button>Action</button>';
+            }
             console.log(playIndex);
         }
 
@@ -104,8 +110,6 @@
                 else
                 console.log('Value still same');
             }
-            
-            // return {'value':0};
         });
         
         socket.on('game_data', function(data){
@@ -159,7 +163,7 @@
             for(card in data['handcards']){
                 handCardHTML += '<li>'+data['handcards'][card];
                 if(chance){
-                    handCardHTML+='<button onclick="playCard(this)" value="'+card+'">Play</button>';
+                    handCardHTML+='<button onclick="playCard(event)" value="'+card + data['handcards'][card]+'">Play</button>';
                 }
                 handCardHTML+='</li>';
             }
@@ -214,7 +218,7 @@
         <div id = "collection">
             
         </div>
-        <div id="wait" style="display: none;">Waiting for chance</div>
+        <div id="wait" style="display: none;"><span style="background-color: rgb(158, 158, 41)">Waiting for chance</span></div>
         <div id = "handCards">
             
         </div>
