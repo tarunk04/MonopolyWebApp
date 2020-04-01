@@ -7,171 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src= '/static/scripts/jquery.min.js'></script>
     <script src= '/static/scripts/socket.io.min.js'></script>
+    <script src= "/static/scripts/main.js"></script>
     <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
     <script src="main.js"></script> -->
-    <script>
-        var socket = io();
-
-        function getSocketObject(){
-            return socket;
-        }
-
-        socket.on('connect', function() {
-            socket.send(userName + ' has connected!');
-        });
-
-        socket.on('message', function(message){
-            console.log(message);
-        });
-
-        function getRndInteger(min, max) {
-            return Math.floor(Math.random() * (max - min + 1) ) + min;
-        }
-
-        var userName = 'player' + getRndInteger(100000,999999);
-        var host = false;
-        function submitUsername(){
-            userName = $("#username").val();
-            // console.log(userName);
-            socket.send(userName + ' has connected!');
-            $("#username").val('');
-        }
-
-        function switchToLobby(roomId){
-            console.log('Room created', roomId);
-            // window.location.replace('/rooms/'+roomId+'/');
-            document.getElementById('home').style.display="none";
-            document.getElementById('lobby').style.display="block";
-            document.getElementById('lobbyRoomid').innerText=roomId;
-            socket.emit('enter_lobby', roomId);
-        }
+    <!-- <script> -->
         
-        function createRoom(){
-            roomId = getRndInteger(100000,999999);
-            host = true;
-            socket.emit('join',{'username':userName,'room':roomId, 'exists':0});
-            switchToLobby(roomId);
-        }
-
-        function joinRoom(){
-            roomId = $("#joinRoomId").val();
-            roomId = Number(roomId);
-            socket.emit('join',{'username':userName,'room':roomId, 'exists':1});
-            switchToLobby(roomId);
-        }
-
-
-        socket.on('modify_lobby',function(data){
-            modifiedHTML = 'Players in lobby: '
-            for(i in data){ modifiedHTML+= '<div>'+data[i]+'</div>';}
-            document.getElementById("users").innerHTML = modifiedHTML;
-            if (host)document.getElementById("lobby").getElementsByTagName("button")[0].style.display="block";
-            console.log('Players in lobby: '+data);
-        });
-
-        function cueToStart(){
-            socket.emit('cue_to_start', roomId);
-        }
-
-        socket.on('game_setup', function(data){
-            document.getElementById('lobby').style.display="none";
-            document.getElementById('board').style.display="block";
-            document.getElementById('boardRoomid').innerText=roomId;
-        });
-
-        var playIndex = -1;
-        function playCard(event){
-            element = event.target;
-            parent = element.parentElement;
-            playIndex = Number(element.value[0]);
-            if (element.value[1]=='A'){
-                parent.innerHTML=element.value.substr(1,)+'<button>Cash</button><button>Action</button>';
-            }
-            console.log(playIndex);
-        }
-
-        socket.on('take_input',function(data,callback){
-            $("#wait").css("display", "block");
-            // socket.send()
-        
-            var myVar = setInterval(myTimer, 1000);
-
-            function myTimer() {
-                console.log('Waiting for chance');
-                if(playIndex !=-1)
-                {
-                    clearInterval(myVar);
-                    choice = playIndex;
-                    console.log('Breaking out of loop');
-                    callback({'value':choice});
-                    playIndex = -1;
-                    $("#wait").css("display", "none");
-                }
-                else
-                console.log('Value still same');
-            }
-        });
-        
-        socket.on('game_data', function(data){
-            console.log('GAME SETUP: ',data);
-            collectionHTML = '';
-
-            for(player in data['players']){
-                
-                propertyCollectionHTML = '<ul>';
-                for(set in data['players'][player]['property_collection']){
-                    thisSet = data['players'][player]['property_collection'][set];
-                    if(thisSet.length!= 0) 
-                    {
-                        propertyCollectionHTML+='<div>'+set+'</div>';
-                        propertyCollectionHTML+='<ol>';
-                        for(card in thisSet){
-                            propertyCollectionHTML+= '<li>'+thisSet[card]+'</li>'
-                        }
-                        propertyCollectionHTML+='</ol>';
-                    }
-                }
-                propertyCollectionHTML+= '</ul>';
-                bankCollectionHTML = '<ul>';
-                for(card in data['players'][player]['bank_collection']){
-                    bankCollectionHTML += '<li>'+data['players'][player]['bank_collection'][card]+'</li>';
-                }
-                bankCollectionHTML+= '</ul>';
-                collectionHTML+='<div>\
-                <div class="propertyCollection">\
-                <h2>'+data['players'][player]['username']+'</h2>\
-                    <h4>Property Collection</h4>\
-                    <div>' + propertyCollectionHTML + '</div>\
-                </div>\
-                <div class="bankCollection">\
-                    <h4>Bank Collection</h4>\
-                    <div>' +  bankCollectionHTML +                     
-                    '</div>\
-                </div>\
-            </div>';
-            }
-            $("#collection").html(collectionHTML);
-
-        });
-
-        socket.on('player_data', function(data){
-            console.log('PLAYER SETUP: ',data);
-            var chance  = false;
-            if(data['chance'])
-            chance = true;
-            handCardHTML = '<h2>'+data['name']+'</h2><h4>Hand Card</h4><ul>';
-            for(card in data['handcards']){
-                handCardHTML += '<li>'+data['handcards'][card];
-                if(chance){
-                    handCardHTML+='<button onclick="playCard(event)" value="'+card + data['handcards'][card]+'">Play</button>';
-                }
-                handCardHTML+='</li>';
-            }
-            handCardHTML+= '</ul>';
-            $("#handCards").html(handCardHTML);
-        });
-
-    </script>
+    <!--</script> -->
 </head>
 <body>
     <h1>Monopoly</h1>
@@ -207,14 +48,14 @@
     
     <div id="board" style="display:none;">
         <h2>Room - <span id="boardRoomid"></span></h2>
-        <div id = "dealerPiles">
+        <!-- <div id = "dealerPiles">
             <div id="drawPile">
                 <h2>Draw Pile</h2>
             </div>
             <div id="playPile">
                 <h2>Play Pile</h2>
             </div> 
-        </div>
+        </div> -->
         <div id = "collection">
             
         </div>

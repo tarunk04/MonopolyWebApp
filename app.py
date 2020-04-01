@@ -5,7 +5,7 @@ import logging
 from game.dealer import Dealer
 from game.player import Players
 
-random.seed(0)
+# random.seed(0)
 
 logging.getLogger('socketio').setLevel(logging.ERROR)
 logging.getLogger('engineio').setLevel(logging.ERROR)
@@ -162,4 +162,4 @@ def initialise_game(room):
 #     send(username + ' has left the room.', room=room)
 
 if __name__ == '__main__':
-	socketio.run(app)
+	socketio.run(app, host='0.0.0.0', port=8000, debug= False)

@@ -1,3 +1,5 @@
+from time import sleep
+
 class Cards():
     def __init__(self, id):
         self.id = id
@@ -35,7 +37,7 @@ class MoneyCards(Cards):
     def __init__(self,id):
         super().__init__(id)
 
-    def playCard(self, player):
+    def playCard(self, player, socketio):
         player.bankCollection.append(self)
         player.moneyValue += self.value #added Value
         player.totalValue += self.value #added Value
@@ -155,11 +157,13 @@ class PropertyCards(Cards):
     def __init__(self,id):
         super().__init__(id)
 
-    def playCard(self, player):
+    def playCard(self, player, socketio):
         if not self.id[1:3] == 'WC':
             color = self.id[1:3]
         else:
-            color = input('Enter the color code of the property set where you would like to add this card: ')
+            receivedData = player.modified_input('choose_own_set', socketio)
+            color = receivedData['color']
+            # color = input('Enter the color code of the property set where you would like to add this card: ')
 
         propertySet = player.findPropertySetByColor(color)
         if propertySet.addPropertyCard(self):
@@ -182,9 +186,20 @@ class ActionCards(Cards):
         actionMap = {'SD':'SlyDeal','FD':'ForcedDeal', 'DB':'DealBreaker','JN':'JustSayNo','DC':'DebtCollector', 'IB':'ItsMyBirthday','DR':'DoubleRent','HS':'House','HT':'Hotel','PG':'PassGo','RT':'RentCard'}
         return actionMap[functionInitials]
 
-    def playCard(self, player, dealer, players):
+    def playCard(self, player, dealer, players, socketio):
         if not self.banked:
-            bank = int(input('1 for Cash and 0 for Action.'))
+            bank =-2
+            def setValue(data):
+                nonlocal bank
+                bank = int(data['value'])
+                print(f'Received Value: {bank}')
+
+            socketio.emit('cash_action',{},room=player.pRoomId, callback= setValue)
+            while bank==-2:
+                print('Waiting for input')
+                sleep(1)
+                continue
+            # bank = int(input('1 for Cash and 0 for Action.'))
         else:
             bank = 1
         if bank:
@@ -197,19 +212,19 @@ class ActionCards(Cards):
         functionInitials = self.id[1:3]
         if functionInitials == 'RT':
             function = self.actionMapFunc(functionInitials)
-            player.__getattribute__(function)(self, dealer, players)
+            player.__getattribute__(function)(self, dealer, players, socketio)
         elif functionInitials == 'JN':
             print('Cannot play just say no until an action has been taken against you')
         elif functionInitials == 'DR':
             print('Can play this card only with a rent card.')
         elif functionInitials == 'PG':
             function = self.actionMapFunc(functionInitials)
-            player.__getattribute__(function)(dealer)
+            player.__getattribute__(function)(dealer) #socketio not required
         elif functionInitials in ['HS','HT']:
             function = self.actionMapFunc(functionInitials)            
-            player.__getattribute__(function)(self)
+            player.__getattribute__(function)(self, socketio)
         else:
             function = self.actionMapFunc(functionInitials)            
-            player.__getattribute__(function)(players)
+            player.__getattribute__(function)(players, socketio)
 
         dealer.discardedCards.append(self.id)
