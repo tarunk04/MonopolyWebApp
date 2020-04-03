@@ -1,3 +1,7 @@
+//TODO: Once everything is complete 
+//1. Refactor socket acceptors
+//2. Instead of adding and removing buttons. Make them active and inactive.
+
         var socket = io();
 
         function getSocketObject(){
@@ -72,6 +76,8 @@
         //+++++++++++++++++++++++++++++++++++++++++++6
         // Choose own Card
 
+        var tempClassNo = 0;
+
         var chosenOwnCard = "";
         var ownCardColor = "";
         var ownCardCollection = "";
@@ -88,7 +94,7 @@
                 chosenOwnCard = element.value;
                 ownCardCollection = "bankCollection";
             }    
-            
+            $("."+element.className.split(" ")[0]).remove();            
             console.log(chosenOwnCard, ownCardColor, ownCardCollection);
         }
 
@@ -97,8 +103,9 @@
             var propertyCards = $(".selfPlayer .Card");
             for(var i=0;i<propertyCards.length;i++)
             {
-                propertyCards[i].innerHTML+='<button value="'+propertyCards[i].attributes['name'].value+'" onclick="chooseOwnCard(event)">Choose</button>';
+                propertyCards[i].innerHTML+='<button value="'+propertyCards[i].attributes['name'].value+'" onclick="chooseOwnCard(event)" class = "justCreated'+tempClassNo+'">Choose</button>';
             }
+            tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
@@ -127,14 +134,16 @@
             element = event.target;
             chosenOwnColor = element.value;
             console.log(chosenOwnColor);
+            $("."+element.className.split(" ")[0]).remove();
         }
 
         socket.on("choose_own_set", function(data, callback){
             $("#wait").css("display", "block");
             var elements = $("#collection .selfPlayer .propertyCollection .propertySet");
             for(var i =0 ;i< elements.length;i++){
-                elements[i].innerHTML+='<button value="'+elements[i].attributes['name'].value+'" onclick="chooseOwnColor(event)">Choose</button>'
+                elements[i].innerHTML+='<button value="'+elements[i].attributes['name'].value+'" onclick="chooseOwnColor(event)" class = "justCreated'+tempClassNo+'">Choose</button>'
             }
+            tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
@@ -163,6 +172,7 @@
             ownPropertyColor = $(element).parents(".propertySet")[0].attributes['name'].value;
             chosenOwnProperty = element.value;
             console.log(chosenOwnProperty, ownPropertyColor);
+            $("."+element.className.split(" ")[0]).remove();
         }
 
         socket.on("choose_own_property", function(data, callback){
@@ -170,8 +180,9 @@
             var propertyCards = $(".selfPlayer .propertyCard");
             for(var i=0;i<propertyCards.length;i++)
             {
-                propertyCards[i].innerHTML+='<button value="'+propertyCards[i].attributes['name'].value+'" onclick="chooseOwnProperty(event)">Choose</button>';
+                propertyCards[i].innerHTML+='<button value="'+propertyCards[i].attributes['name'].value+'" onclick="chooseOwnProperty(event)" class = "justCreated'+tempClassNo+'">Choose</button>';
             }
+            tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
@@ -201,8 +212,10 @@
             parent = element.parentElement;
             playIndex = Number(element.value[0]);
             if (element.value[1]=='A'){
-                parent.innerHTML=element.value.substr(1,)+'<button value="1" onclick="cashOrAction(event)">Cash</button><button onclick="cashOrAction(event)" value="0">Action</button>';
+                parent.innerHTML=element.value.substr(1,)+'<button value="1" onclick="cashOrAction(event)" class = "justCreated'+tempClassNo+'">Cash</button><button onclick="cashOrAction(event)" value="0" class = "justCreated'+tempClassNo+'">Action</button>'; //TODO: Generalise the function for choice
             }
+            tempClassNo+=1;
+            $("."+element.className.split(" ")[0]).remove();
             console.log(playIndex);
         }
 
@@ -237,14 +250,16 @@
             otherPlayerId = $(element).parents(".player")[0].id;
             chosenOthersColor = element.value;
             console.log(chosenOthersColor);
+            $("."+element.className.split(" ")[0]).remove();
         }
 
         socket.on("choose_others_set", function(data, callback){
             $("#wait").css("display", "block");
             var elements = $("#collection .otherPlayer .propertyCollection .propertySet");
             for(var i =0 ;i< elements.length;i++){
-                elements[i].innerHTML+='<button value="'+elements[i].attributes['name'].value+'" onclick="chooseOthersColor(event)">Choose</button>'
+                elements[i].innerHTML+='<button value="'+elements[i].attributes['name'].value+'" onclick="chooseOthersColor(event)"  class = "justCreated'+tempClassNo+'">Choose</button>'
             }
+            tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
@@ -275,6 +290,7 @@
             otherPlayerId = $(element).parents(".player")[0].id;
             chosenOthersProperty = element.value;
             console.log(chosenOthersProperty, otherPlayerId, otherPropertyColor);
+            $("."+element.className.split(" ")[0]).remove();
         }
 
         socket.on("choose_others_property", function(data, callback){
@@ -282,8 +298,9 @@
             var propertyCards = $(".otherPlayer .propertyCard");
             for(var i=0;i<propertyCards.length;i++)
             {
-                propertyCards[i].innerHTML+='<button value="'+propertyCards[i].attributes['name'].value+'" onclick="chooseOthersProperty(event)">Choose</button>';
+                propertyCards[i].innerHTML+='<button value="'+propertyCards[i].attributes['name'].value+'" onclick="chooseOthersProperty(event)"  class = "justCreated'+tempClassNo+'">Choose</button>';
             }
+            tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
@@ -313,6 +330,7 @@
             element = event.target;
             chosenPlayer = element.value;
             console.log(chosenPlayer);
+            $("."+element.className.split(" ")[0]).remove();
         }
 
         socket.on("choose_player", function(data, callback){
@@ -320,8 +338,9 @@
             var otherPlayers = $(".otherPlayer");
             for(var i=0;i<otherPlayers.length;i++)
             {
-                otherPlayers[i].innerHTML+='<button value="'+otherPlayers[i].id+'" onclick="choosePlayer(event)">Choose</button>';
+                otherPlayers[i].innerHTML+='<button value="'+otherPlayers[i].id+'" onclick="choosePlayer(event)" class = "justCreated'+tempClassNo+'">Choose</button>';
             }
+            tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
@@ -348,6 +367,7 @@
             element = event.target;
             cashOrActionValue = Number(element.value);
             console.log(cashOrActionValue);
+            $("."+element.className.split(" ")[0]).remove();
         }
 
         socket.on('cash_action',function(data,callback){
@@ -436,10 +456,11 @@
             for(card in data['handcards']){
                 handCardHTML += '<li>'+data['handcards'][card];
                 if(chance){
-                    handCardHTML+='<button onclick="playCard(event)" value="'+card + data['handcards'][card]+'">Play</button>';
+                    handCardHTML+='<button onclick="playCard(event)" value="'+card + data['handcards'][card]+'" class = "justCreated'+tempClassNo+'">Play</button>';
                 }
                 handCardHTML+='</li>';
             }
+            tempClassNo+=1;
             handCardHTML+= '</ul>';
             $("#handCards").html(handCardHTML);
         });
