@@ -39,6 +39,10 @@ height: 400px;
     height:100%;
   }
 
+  .propertyCollection{
+    height:100%;overflow-x: scroll;
+  }
+  
   .bankCollection{
     height:100%;overflow-x: scroll;
   }
