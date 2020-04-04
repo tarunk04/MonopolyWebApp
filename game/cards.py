@@ -41,12 +41,13 @@ class MoneyCards(Cards):
         player.bankCollection.append(self)
         player.moneyValue += self.value #added Value
         player.totalValue += self.value #added Value
+        return True
 
 class PropertySet():
     def __init__(self,color):
         self.color = color
         self.propertyCards = []
-        self.fullSetSize = len(self.rentMapFunc(color))
+        self.fullSetSize = len(self.rentMapFunc(color)) if color !='XX' else -1 #This way it won't be of full size ever. So, don't need to handle house and hotels separately!!!
         # self.currentSetSize = len(self.propertyCards)
         self.house = None
         self.hotel = None
@@ -160,14 +161,23 @@ class PropertyCards(Cards):
     def playCard(self, player, socketio):
         if not self.id[1:3] == 'WC':
             color = self.id[1:3]
-        else:
+        elif self.id[3:5] == 'XX':
+            # color = input('Enter the color code of the property set where you would like to add this card: ')
             receivedData = player.modified_input('choose_own_set', socketio)
             color = receivedData['color']
-            # color = input('Enter the color code of the property set where you would like to add this card: ')
+        else:
+            color1, color2 = self.id[3:5], self.id[5:7]
+            colorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {color1}, 1 for {color2}'))
+            color = color1 if colorIndex == 0 else color2
 
         propertySet = player.findPropertySetByColor(color)
-        if propertySet.addPropertyCard(self):
-            player.totalValue += self.value #added Value
+        if not propertySet.addPropertyCard(self):#Some error in adding property - Full set
+            # Try adding it to XX:
+            mixedPropertySet = player.findPropertySetByColor('XX')
+            if not mixedPropertySet.addPropertyCard(self):
+                return False
+        player.totalValue += self.value #added Value
+        return True
         # player.propertyCollection.append(self)
 
 class ActionCards(Cards):
@@ -207,24 +217,31 @@ class ActionCards(Cards):
             player.bankCollection.append(self)
             player.moneyValue += self.value #Added Value
             player.totalValue += self.value #added Value
-            return 
+            return True
 
         functionInitials = self.id[1:3]
         if functionInitials == 'RT':
             function = self.actionMapFunc(functionInitials)
-            player.__getattribute__(function)(self, dealer, players, socketio)
+            if not player.__getattribute__(function)(self, dealer, players, socketio):
+                return False
         elif functionInitials == 'JN':
             print('Cannot play just say no until an action has been taken against you')
+            return False
         elif functionInitials == 'DR':
             print('Can play this card only with a rent card.')
+            return False
         elif functionInitials == 'PG':
             function = self.actionMapFunc(functionInitials)
-            player.__getattribute__(function)(dealer) #socketio not required
+            if not player.__getattribute__(function)(dealer): #socketio not required
+                return False
         elif functionInitials in ['HS','HT']:
             function = self.actionMapFunc(functionInitials)            
-            player.__getattribute__(function)(self, socketio)
-        else:
+            if not player.__getattribute__(function)(self, socketio):
+                return False
+        else: # DB, SD, FD, IB, DC
             function = self.actionMapFunc(functionInitials)            
-            player.__getattribute__(function)(players, socketio)
+            if not player.__getattribute__(function)(players, socketio):
+                return False
 
-        dealer.discardedCards.append(self.id)
+        # dealer.discardedCards.append(self.id)
+        return True

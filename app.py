@@ -133,7 +133,7 @@ def initialise_game(room):
             val = player.playCard(socketio= socketio, dealer  = dealer, players = players) #TODO check the value of val
             if val == -1:
                 break
-            player.chanceNo +=1 
+            # player.chanceNo +=1  Will increase this in the lower functions
             socketio.emit('player_data',json_player_data(player,dealer), room = player.pRoomId)    
             socketio.emit('game_data',json_game_data(players,dealer), room = room)
 

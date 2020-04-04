@@ -28,10 +28,12 @@ class Player():
         self.totalValue = 0
         self.chance = False
         self.chanceNo = -1
+        self.doubleRent = False
         self.initialisePropertyCollection()
 
     def hasWon(self):
-        if self.fullSets >=3:
+        # if self.fullSets >=3:
+        if sum([propertySet.isFullSet() for propertySet in self.propertyCollection]) >=3:
             return True
         else:
             return False
@@ -42,10 +44,15 @@ class Player():
         else:
             numCards = 2
 
-        self.handCards+= [dealer.createCardObject(dealer.drawPile.pop()) for _ in range(numCards)]
+        try:
+            self.handCards+= [dealer.createCardObject(dealer.drawPile.pop()) for _ in range(numCards)]
+        except Exception as e:
+            print(f"Error occured in drawing cards: {e}")
+            return False
+        return True
 
     def initialisePropertyCollection(self):
-        colors  = ['Bl','Lg','Lb','Db','Dg','Br','Or','Pk','Yl','Rd']
+        colors  = ['Bl','Lg','Lb','Db','Dg','Br','Or','Pk','Yl','Rd','XX'] #Added extra color bin
         self.propertyCollection = [PropertySet(color) for color in colors]
 
     def findMoneyCardById(self, moneyCardId):
@@ -76,33 +83,47 @@ class Player():
         toPropertySet.append(propertyCard)
 
     def PassGo(self, dealer):
-        self.drawCards(dealer)
+        if not self.drawCards(dealer):
+            return False
+        return True
 
     def House(self,actionCard, socketio):
         receivedData = self.modified_input('choose_own_set', socketio)
         toColor = receivedData['color']
         # toColor = input('Enter the color of the property Set to which the House is to be added.')
         propertySet = self.findPropertySetByColor(toColor)
-        if propertySet.addHouse(actionCard):
-            self.totalValue += actionCard.value
+        if not propertySet.addHouse(actionCard):
+            return False
+        self.totalValue += actionCard.value
+        return True
 
     def Hotel(self,actionCard, socketio):
         receivedData = self.modified_input('choose_own_set', socketio)
         toColor = receivedData['color']
         # toColor = input('Enter the color of the property Set to which the Hotel is to be added.')
         propertySet = self.findPropertySetByColor(toColor)
-        if propertySet.addHotel(actionCard):
-            self.totalValue+= actionCard.value
+        if not propertySet.addHotel(actionCard):
+            return False
+        self.totalValue+= actionCard.value
+        return True
     
     def DealBreaker(self, players, socketio):
+        if not any([propertySet.isFullSet() for player in players.players for propertySet in player.propertyCollection  if player.id != self.id]):
+            print("No full set to take!!!")
+            return False
         # playerId = input('Enter the user ID')
         # fromColor = input('Enter the set color')
         receivedData = self.modified_input('choose_others_set', socketio)
         playerId = receivedData['playerId']
         fromColor = receivedData['color']
-        self.requestCard(players, playerId = playerId, fromColor = fromColor, socketio= socketio) #asks and arranges card on successful request
+        if not self.requestCard(players, playerId = playerId, fromColor = fromColor, socketio= socketio): #asks and arranges card on successful request
+            return False
+        return True
         
     def SlyDeal(self, players, socketio):
+        if not any([len(propertySet.propertyCards)> 0 for player in players.players for propertySet in player.propertyCollection]): #NOTE this
+            print('No property to take !!!')
+            return False
         # playerId = input('Enter the user ID')
         # fromColor = input('Enter the set color')
         receivedData = self.modified_input('choose_others_property', socketio)
@@ -110,9 +131,19 @@ class Player():
         playerId = receivedData['playerId']
         fromColor = receivedData['color']
         # propertyCardId = input('Enter the id of the property Card')
-        self.requestCard(players, playerId = playerId, propertyCardId = propertyCardId, fromColor = fromColor, socketio=socketio)
+        if not self.requestCard(players, playerId = playerId, propertyCardId = propertyCardId, fromColor = fromColor, socketio=socketio):
+            return False
+        return True
 
     def ForcedDeal(self, players, socketio):
+        if not any([len(propertySet.propertyCards) >0 for propertySet in self.propertyCollection]):
+            print('No property to give!!!')
+            return False
+
+        if not any([len(propertySet.propertyCards)> 0 for player in players.players for propertySet in player.propertyCollection if player.id != self.id]): #NOTE this
+            print('No property to take !!!')
+            return False
+
         receivedData = self.modified_input('choose_others_property', socketio)
         # playerId = input('Enter the player ID')
         # takePropertyColor = input('Enter the set color from which to take the property')
@@ -125,48 +156,73 @@ class Player():
         receivedData = self.modified_input('choose_own_property', socketio)
         givePropertyCardId = receivedData['value']
         givePropertyColor = receivedData['color']
-        success = self.requestCard(players, playerId = playerId, propertyCardId = takePropertyCardId, fromColor = takePropertyColor, socketio=socketio)
+        
+        if not self.requestCard(players, playerId = playerId, propertyCardId = takePropertyCardId, fromColor = takePropertyColor, socketio=socketio):
+            return False
         # if success:
         player = players.findPlayerById(playerId)
-        player.requestCard(players, playerId= self.id, propertyCardId = givePropertyCardId,fromColor = givePropertyColor, socketio= socketio)
+        if not player.requestCard(players, playerId= self.id, propertyCardId = givePropertyCardId,fromColor = givePropertyColor, socketio= socketio):
+            print('Atomicity to be handled') #TODO:
+            return False
+        return True
 
     def DebtCollector(self, players, socketio):
         # playerId = input('Enter the player ID')
-        receivedData = self.modified_input('choose_player', socketio)
-        playerId = receivedData['playerId']
-        self.requestCard(players, playerId=playerId, money = 5,socketio= socketio)
+        if len(players.players) == 2:
+            playerId  = [player.id for player in players.players if self.id != player.id][0]
+        else:
+            receivedData = self.modified_input('choose_player', socketio)
+            playerId = receivedData['playerId']
+        if not self.requestCard(players, playerId=playerId, money = 5,socketio= socketio):
+            return False
+        return True
 
     def ItsMyBirthday(self, players, socketio): #Although not required
-        self.requestCard(players, money= 2, socketio= socketio)
+        if not self.requestCard(players, money= 2, socketio= socketio):
+            return False
+        return True
 
     def RentCard(self, actionCard, dealer, players, socketio):
-        doubleRent = False
+        if actionCard.id[3:5] == "XX":
+            # propertyColor = input('Enter the set color for which to take the rent.')
+            receivedData = self.modified_input('choose_own_set', socketio)
+            propertyColor = receivedData['color']
+        else:
+            propertyColor1, propertyColor2 = actionCard.id[3:5], actionCard.id[5:7]
+            if self.findPropertySetByColor(propertyColor1).currentSetSize()>0 and self.findPropertySetByColor(propertyColor2).currentSetSize()>0:
+                propertyColorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {propertyColor1}, 1 for {propertyColor2}')) #TODO:
+                propertyColor = propertyColor1 if propertyColorIndex == 0 else propertyColor2
+            elif self.findPropertySetByColor(propertyColor1).currentSetSize()>0:
+                propertyColor = propertyColor1
+            elif self.findPropertySetByColor(propertyColor2).currentSetSize()>0:
+                propertyColor = propertyColor2
+            else:
+                print('No poperty card of any of these colours!!!!')
+                return False
+
         if self.chanceNo < self.cardsToPlay:
             if 'ADR' in [card.id for card in self.handCards]:
                 if int(input('Do you want to play double the rent? 1 for yes')):
-                    doubleRentCard = [card for card in self.handCards if card.id=='ADR'][0]
-                    dealer.discardedCards.append(doubleRentCard.id)
-                    self.handCards.remove(doubleRentCard)
-                    self.chanceNo += 1
-                    doubleRent = True
-        
-        receivedData = self.modified_input('choose_own_set', socketio)
-        propertyColor = receivedData['color']
-        # propertyColor = input('Enter the set color for which to take the rent.')
+                    self.doubleRent = True
         propertySet = self.findPropertySetByColor(propertyColor)
         moneyToAsk = propertySet.currentRent()
-        if doubleRent:
+        if self.doubleRent:
             moneyToAsk*=2
 
         print(f'User {self.id} wants {moneyToAsk} money.')
         if actionCard.id == 'ARTXX':
-            receivedData = self.modified_input('choose_player', socketio)
-            playerId = receivedData['playerId']
-            # playerId = input('Enter the id of the player from whom to take the rent')
-            self.requestCard(players, playerId = playerId, money = moneyToAsk, socketio= socketio)
+            if len(players.players) == 2:
+                playerId  = [player.id for player in players.players if self.id != player.id][0]
+            else:
+                receivedData = self.modified_input('choose_player', socketio)
+                playerId = receivedData['playerId']
+                # playerId = input('Enter the id of the player from whom to take the rent')
+            if not self.requestCard(players, playerId = playerId, money = moneyToAsk, socketio= socketio):
+                return False
             return True
         
-        self.requestCard(players, money = moneyToAsk, socketio= socketio)
+        if not self.requestCard(players, money = moneyToAsk, socketio= socketio):
+            return False #TODO: Atomicity
         return True
 
 
@@ -299,7 +355,7 @@ class Player():
         while True:
             self.showPropertyCollection()
             # arrange = int(input('Wish to arrange?Property(1) or Hotel/House(2) or None(-1)'))
-            arrange = -1 #TODO Hardcoded for now
+            arrange = -1 #TODO: Hardcoded for now
             if arrange == -1:
                 # self.showBankCollection()
                 # self.showPropertyCollection()
@@ -362,24 +418,33 @@ class Player():
             player = players.findPlayerById(playerId)
             propertySet = player.findPropertySetByColor(fromColor)
             propertyCard = propertySet.findPropertyCardById(propertyCardId)
-            if self.requestPropertyCard(player,propertySet, propertyCard): #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
-                self.arrangeCards(players, socketio)
+            try:
+                self.requestPropertyCard(player,propertySet, propertyCard): #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
+            except Exception as e:
+                print(f'Some error occured while requesting card: {e}')
+                return False
                 #Arrange cards
                 # pass
 
         elif fromColor and playerId: #Property Set from a particular player. Eg - DealBreaker
             player = players.findPlayerById(playerId)
             propertySet = player.findPropertySetByColor(fromColor)
-            if self.requestPropertySet(player, propertySet):
+            try:
+                self.requestPropertySet(player, propertySet):
                 #Arrange Cards
-                self.arrangeCards(players, socketio)
+            except Exception as e:
+                print(f'Some error occured while requesting card: {e}')
+                return False
                 # pass
 
         elif money and playerId: #Money from a particular player. Eg - Multicolor Rent/ DebtCollector
             player = players.findPlayerById(playerId)
-            if self.requestMoney(player, money,socketio):
+            try:
+                self.requestMoney(player, money,socketio):
                 #Arrange Cards
-                self.arrangeCards(players, socketio)
+            except Exception as e:
+                print(f'Some error occured while requesting card: {e}')
+                return False
                 # pass
 
         elif money:
@@ -387,11 +452,17 @@ class Player():
                 if player.id == self.id:
                     continue #Don't collect rent from one self
                 print(f'Player - {player.id} turn to pay rent to {self.id}.')
-                self.requestMoney(player, money, socketio)
-            if len(self.exchangeBuffer)>0:
-                #Arrange Cards
-                self.arrangeCards(players, socketio)
+                try:
+                    self.requestMoney(player, money, socketio)
+                except Exception as e:
+                    print(f'Some error occured while requesting card: {e}')
+                    return False
+            # if len(self.exchangeBuffer)>0:
+            #     #Arrange Cards
+            #     self.arrangeCards(players, socketio)
                 # pass
+        self.arrangeCards(players)
+        return True
 
     def showPropertyCollection(self):
         print('Property:', end= ' ')
@@ -459,11 +530,26 @@ class Player():
             return -1
 
         if isinstance(self.handCards[playIndex], ActionCards):
-            self.handCards[playIndex].playCard(self, dealer = dealer, players = players, socketio= socketio)
+            success = self.handCards[playIndex].playCard(self, dealer = dealer, players = players, socketio= socketio)
         else:
-            self.handCards[playIndex].playCard(self, socketio = socketio)
+            success = self.handCards[playIndex].playCard(self, socketio = socketio)
+        
+        if not success:
+            print('Hand not played')
+            # self.chanceNo -=1 #Not decreasing. Instead increasing only on success.
+            return
+        
         playedCard = self.handCards.pop(playIndex)
         dealer.discardedCards.append(playedCard.id)
+        self.chanceNo +=1
+
+        if self.doubleRent:
+            doubleRentCard = [card for card in self.handCards if card.id=='ADR'][0]
+            dealer.discardedCards.append(doubleRentCard) #TODO:X
+            self.handCards.remove(doubleRentCard)
+            self.chanceNo += 1 #TODO:X
+            self.doubleRent = False
+
         self.showPropertyCollection()
         self.showBankCollection()
         return 0
