@@ -138,7 +138,7 @@ def initialise_game(room):
             socketio.emit('game_data',json_game_data(players,dealer), room = room)
 
         if len(player.handCards)>7:
-            player.discardCards(dealer.drawPile)
+            player.discardCards(dealer.drawPile, socketio)
             socketio.emit('player_data',json_player_data(player,dealer), room = player.pRoomId)        
             socketio.emit('game_data',json_game_data(players,dealer), room = room)
 

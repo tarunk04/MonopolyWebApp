@@ -116,21 +116,22 @@
            d="m 139.01966,142.93689 h 12.85119"
            id="path17995-1"
            inkscape:connector-curvature="0" />
-        <flowRoot
+        <text
            xml:space="preserve"
-           id="flowRoot18012"
-           style="font-style:normal;font-weight:normal;font-size:60.00000381px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
-           transform="matrix(0.26458333,0,0,0.26458333,-2.5702586,-1.6631004)"><flowRegion
-             id="flowRegion18014"
-             style="font-size:60.00000381px"><rect
-               id="rect18016"
-               width="188.57146"
-               height="74.28569"
-               x="317.14285"
-               y="511.09113"
-               style="font-size:60.00000381px" /></flowRegion><flowPara
-             id="flowPara18018"
-             style="font-weight:bold;font-size:60.00000381px">RENT</flowPara></flowRoot>      </g>
+           style="font-style:normal;font-weight:normal;font-size:15.87500095px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
+           x="81.340378"
+           y="148.04651"
+           id="text6140"><tspan
+             sodipodi:role="line"
+             x="81.340378"
+             y="148.04651"
+             id="tspan6138"
+             style="stroke-width:0.26458332"><tspan
+               x="81.340378"
+               y="148.04651"
+               style="font-weight:bold;font-size:15.87500095px;stroke-width:0.26458332"
+               id="tspan6136">RENT</tspan></tspan></text>
+      </g>
       <rect
          ry="5.6921692"
          rx="0"

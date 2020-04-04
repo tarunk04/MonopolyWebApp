@@ -498,11 +498,12 @@ class Player():
         for i, card in enumerate(self.handCards):
             print(i, card)
 
-    def discardCards(self,drawPile):
+    def discardCards(self,drawPile, socketio):
         extraCards = len(self.handCards) - 7
         self.showHandCards()
         for _ in range(extraCards):
-            removeIndex = int(input('Which Card to remove?'))
+            removeIndex = int(self.modified_input('take_input', socketio)['value'])
+            # removeIndex = int(input('Which Card to remove?'))
             drawPile.insert(0,self.handCards.pop(removeIndex)) 
 
     def modified_input(self, funcToCall, socketio, dataToSend={}):

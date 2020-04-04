@@ -269,7 +269,7 @@
                     clearInterval(myVar);
                     choice = chosenOthersColor;
                     console.log('Breaking out of loop');
-                    callback({'value':choice,'playerId':otherPlayerId});
+                    callback({'color':choice,'playerId':otherPlayerId});
                     chosenOthersColor = "";
                     otherPlayerId = "";
                     $("#wait").css("display", "none");
