@@ -5,17 +5,28 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Home Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src= '/static/scripts/jquery.min.js'></script>
-    <script src= '/static/scripts/socket.io.min.js'></script>
-    <script src= "/static/scripts/main.js"></script>
-    <!-- <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
-    <script src="main.js"></script> -->
-    <!-- <script> -->
-        
-    <!--</script> -->
+    <!-- <link rel="stylesheet" href="/static/styles/main.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" media="screen" href="/static/styles/main.css" />
+    <!-- <script src="main.js"></script> -->
+    <!-- <style>
+        .handCard{
+            float:left;height:100%;
+        }
+
+        .handCardImage{
+          height:100%;
+        }
+    </style> -->
+
 </head>
 <body>
-    <h1>Monopoly</h1>
+    <!-- <h1>Monopoly</h1> -->
+    <div style="width:80vw;margin:auto;">
+
+    <div style="height:20vh;margin: 0 0 2% 0; text-align:center;">
+            <img style="height:100%" src="/static/images/monopolyTitle.png" alt="monopolyTitle">
+    </div>
     <div id="home">
             <div>
                     <input id="username" type="text">
@@ -46,8 +57,8 @@
         <button onclick="cueToStart()" style="display:none;">Start Game</button>
     </div>
     
-    <div id="board" style="display:none;">
-        <h2>Room - <span id="boardRoomid"></span></h2>
+    <!-- <div id="board" style="display:none;">
+        <h2>Room - <span id="boardRoomid"></span></h2> -->
         <!-- <div id = "dealerPiles">
             <div id="drawPile">
                 <h2>Draw Pile</h2>
@@ -56,16 +67,31 @@
                 <h2>Play Pile</h2>
             </div> 
         </div> -->
-        <div id = "collection">
+        <div id = "board" style="display: none;" class="carousel slide" data-ride="false">
+            <h2>Room - <span id="boardRoomid"></span></h2>
+            <div id="collection" class="carousel-inner" role="listbox">
+                   
+            </div>
+            <div id="tabs" class="tabbable">
+                <ul id="tabsInner" class="nav nav-tabs nav-justified">
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div id = "handCards" style="height: 300px;overflow: auto;">
             
         </div>
         <div id="wait" style="display: none;"><span style="background-color: rgb(158, 158, 41)">Waiting for chance</span></div>
-        <div id = "handCards">
-            
-        </div>
-    
     </div>
     
+    <!-- </div> -->
+    
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- <script src= '/static/scripts/jquery.min.js'></script> -->
+    <script src= '/static/scripts/socket.io.min.js'></script>
+    <script src= "/static/scripts/main.js"></script>
 
 </body>
 </html>

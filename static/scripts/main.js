@@ -391,34 +391,50 @@
                 console.log('Value still same');
             }
         });
-          
+        var initialTabSetup = false;
         socket.on('game_data', function(data){
             console.log('GAME SETUP: ',data);
             collectionHTML = '';
+            // console.log('This is the initial phase',initialTabSetup);
+            if(initialTabSetup==false){
+                var tabHTML = '';
+                for(player in data['players']){
+                    tabHTML+='<li class="active"><a href="#'+player+'" id="" data-toggle="tab" data-target="#'+player+', #board" data-slide-to="'+player[1]+'">'+data['players'][player]['username']+'</a></li>';
+                }
+                console.log("This is the inner html",tabHTML);
+                $("#tabsInner").html(tabHTML);
+                if(tabHTML!="")initialTabSetup=true;
+            }
 
             for(player in data['players']){
                 
-                propertyCollectionHTML = '<ul>';
+                propertyCollectionHTML = '<ul class="propertySetList">';
                 for(set in data['players'][player]['property_collection']){
                     thisSet = data['players'][player]['property_collection'][set];
                     if(thisSet.length!= 0) 
                     {
                         propertyCollectionHTML+='<li name="'+set+'" class="propertySet">';
-                        propertyCollectionHTML+='<div>'+set+'</div>';
-                        propertyCollectionHTML+='<ol>';
+                        // propertyCollectionHTML+='<div>'+set+'</div>';
+                        propertyCollectionHTML+='<ul class="propertyCardList">';
+                        var topDistance = 0;
+                        var topDistanceAttribute = "";
                         for(card in thisSet){
-                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card">'+thisSet[card]+'</li>'
+                            if(topDistance!=0)
+                            topDistanceAttribute = 'position:absolute;top:'+topDistance+'%;'
+                            else
+                            topDistanceAttribute="";
+                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card" style="'+topDistanceAttribute+'"><img src ="/static/images/cards/'+thisSet[card]+'.svg" alt="Card" style="height:100%"></li>'
+                            topDistance+=20;
                         }
-                        propertyCollectionHTML+='</ol>';
+                        propertyCollectionHTML+='</ul>';
                         propertyCollectionHTML+='</li>';
-
                     }
                 }
                 propertyCollectionHTML+= '</ul>';
-                bankCollectionHTML = '<ul>';
+                bankCollectionHTML = '<ul class="cashList">';
                 for(card in data['players'][player]['bank_collection']){
                     cardId = data['players'][player]['bank_collection'][card];
-                    bankCollectionHTML += '<li name="'+cardId+'" class="bankCard Card">'+cardId+'</li>';
+                    bankCollectionHTML += '<li name="'+cardId+'" class="bankCard Card"><img src=/static/images/cards/'+cardId+'.svg alt="Card" height="100%"></li>';
                 }
                 bankCollectionHTML+= '</ul>';
                 otherPlayer = true;
@@ -427,18 +443,17 @@
                 }
 
                 playerClass = "player ";
-                if(otherPlayer)playerClass += "otherPlayer";
-                else playerClass += "selfPlayer";
+                if(otherPlayer)playerClass += "item otherPlayer";
+                else playerClass += "item selfPlayer active"; //By default collection of the player is shown
 
                 collectionHTML+='<div id="'+player+'" class="'+playerClass+'">\
-                <h2>'+data['players'][player]['username']+'</h2>\
-                <div class="propertyCollection">\
-                    <h4>Property Collection</h4>\
+                <div class="row" style="height:100%">\
+                <div class="col-md-8 propertyCollection" >\
                     '+ propertyCollectionHTML + '\
                 </div>\
-                <div class="bankCollection">\
-                    <h4>Bank Collection</h4>\
+                <div class="col-md-4 bankCollection">\
                     ' +  bankCollectionHTML + '\
+                </div>\
                 </div>\
             </div>';
             }
@@ -452,15 +467,16 @@
             var chance  = false;
             if(data['chance'])
             chance = true;
-            handCardHTML = '<h2>'+data['name']+'</h2><h4>Hand Card</h4><ul>';
+            handCardHTML = '';//'<h2>'+data['name']+'</h2><h4>Hand Card</h4>';
+            // <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
             for(card in data['handcards']){
-                handCardHTML += '<li>'+data['handcards'][card];
+                handCardHTML += '<div class="handCard"><img src="/static/images/cards/'+data['handcards'][card]+'.svg" class="handCardImage" alt="Card">';
                 if(chance){
                     handCardHTML+='<button onclick="playCard(event)" value="'+card + data['handcards'][card]+'" class = "justCreated'+tempClassNo+'">Play</button>';
                 }
-                handCardHTML+='</li>';
+                handCardHTML+='</div>';
             }
             tempClassNo+=1;
-            handCardHTML+= '</ul>';
+            handCardHTML+= '</div>';
             $("#handCards").html(handCardHTML);
         });

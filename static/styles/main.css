@@ -1,0 +1,64 @@
+/* Carousel base class */
+.carousel {
+width:80vw;
+margin:auto;
+height:400px;
+margin-bottom: 60px;
+}
+/* Since positioning the image, we need to help out the caption */
+.carousel-caption {
+z-index: 10;
+}
+
+/* Declare heights because of positioning of img element */
+.carousel .item {
+height: 400px;
+background-color: #777;
+}
+.carousel-inner > .item > img {
+position: absolute;
+top: 0;
+left: 0;
+min-width: 100%;
+height: 400px;
+}
+
+.propertySetList{
+    height:300px;list-style-type: none;padding-left: 0;
+  }
+
+  .propertySet{
+    float:left;height:100%;
+  }
+  
+  .propertyCardList{
+    height: inherit;list-style-type: none;padding-left: 0;position:relative;
+  }
+
+  .propertyCard{
+    height:100%;
+  }
+
+  .bankCollection{
+    height:100%;overflow-x: scroll;
+  }
+
+  .cashList{
+    height:300px;list-style-type: none;padding-left: 0;
+  }
+
+  .bankCard{
+    float:left;height:100%;
+  }
+
+  .bankCardImage{
+    height:100%;
+  }
+
+  .handCard{
+      float:left;height:100%;
+  }
+
+  .handCardImage{
+    height:100%;
+  }

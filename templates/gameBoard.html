@@ -34,8 +34,47 @@
         min-width: 100%;
         height: 500px;
         }
+        
+        .propertySetList{
+          height:300px;list-style-type: none;padding-left: 0;
+        }
 
-    </style>
+        .propertySet{
+          float:left;height:100%;
+        }
+        
+        .propertyCardList{
+          height: inherit;list-style-type: none;padding-left: 0;position:relative;
+        }
+
+        .propertyCard{
+          height:100%;
+        }
+
+        .bankCollection{
+          height:100%;overflow-x: scroll;
+        }
+
+        .cashList{
+          height:300px;list-style-type: none;padding-left: 0;
+        }
+
+        .bankCard{
+          float:left;height:100%;
+        }
+
+        .bankCardImage{
+          height:100%;
+        }
+
+        .handCard{
+            float:left;height:100%;
+        }
+
+        .handCardImage{
+          height:100%;
+        }
+    </style>  
 </head>
 <body>
     
@@ -45,72 +84,76 @@
     <div style="height:20vh;margin: 0 0 2% 0; text-align:center;">
         <img style="height:100%" src="monopolyTitle.png" alt="monopolyTitle">
     </div>
-    <div id="myCarousel" class="carousel slide" data-ride="false">
+    <div id="collection" class="carousel slide" data-ride="false">
             <div class="carousel-inner" role="listbox">
-              <div class="item">
+              <div class="item active">
                 <img class="first-slide img-responsive" src="http://placehold.it/1920x500" alt="First slide">
               </div>
-              <div class="item active">
+              <div class="item"> <!--id="U0-->
                 <div class="row" style="height:100%">
-                    <div class="col-md-9" style="height:100%; overflow-x: scroll;">
-                            <div style="float:left;height:100%">
-                                    <div style="height:100%"><img src="money4.svg" alt="Card" style="height:100%"></div>
-                                    <div style="height:100%;position:absolute;top:20%;"><img src="money4.svg" alt="Card" style="height:100%"></div>
-                                    <div style="height:100%;position:absolute;top:40%;"><img src="money4.svg" alt="Card" style="height:100%"></div>
-                                    <div style="height:100%;position:absolute;top:60%;"><img src="money4.svg" alt="Card" style="height:100%"></div>
-                            </div>
+                    <div class="col-md-8 propertyCollection" >
+                            <ul class="propertySetList">
+                              <li name ="color" class="propertySet" style="">
+                                    <ul class="propertyCardList">
+                                      <li name= "PBl" class="propertyCard Card" style=""><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                      <li name = "PBl" class="propertyCard Card" style="position:absolute;top:20%;"><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                      <li name = "PBl" class="propertyCard Card" style="position:absolute;top:40%;"><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                      <li name = "PBl" class="propertyCard Card" style="position:absolute;top:60%;"><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                    </ul>
+                              </li>
+                              <li name ="color2" class="propertySet" style="">
+                                  <ul class="propertyCardList">
+                                    <li name = "PBl" class="propertyCard Card" style=""><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                    <li name = "PBl" class="propertyCard Card" style="position:absolute;top:20%;"><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                  </ul>
+                              </li>
+                              <li name ="color2" class="propertySet" style="">
+                                  <ul class="propertyCardList">
+                                    <li name = "PBl" class="propertyCard Card" style=""><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                    <li name = "PBl" class="propertyCard Card" style="position:absolute;top:20%;"><img src="sampleGreen.svg" alt="Card" style="height:100%"></li>
+                                  </ul>
+                              </li>
                             
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
+                          </ul>
                     </div>
-                    <div class="col-md-3" style="height:100%;overflow-x: scroll;">
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-                            <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
+                    <div class="col-md-4  bankCollection">
+                            <ul class="cashList">
+                              <li class="bankCard Card"><img src="money4.svg" alt="Card" height="100%"></li>
+                              <li class="bankCard Card"><img src="money4.svg" alt="Card" height="100%"></li>
+                              <li class="bankCard Card"><img src="money4.svg" alt="Card" height="100%"></li>
+                              <li class="bankCard Card"><img src="money4.svg" alt="Card" height="100%"></li>
+                              <li class="bankCard Card"><img src="money4.svg" alt="Card" height="100%"></li>
+                            </ul>
                     </div>
-                    
-                    
-                    
                 </div>
               </div>
               <div class="item">
                 <img class="third-slide img-responsive" src="http://placehold.it/1920x500" alt="Third slide">
               </div>
-              <div class="item">
-                <img class="fourth-slide img-responsive" src="http://placehold.it/1920x500" alt="fourth slide">
-
-              </div>
+              
             </div>
 
             <div class="tabbable">
                 <ul class="nav nav-tabs nav-justified">
-                  <li class="active"><a href="#one" id="" data-toggle="tab" data-target="#one, #myCarousel" data-slide-to="0">One</a></li>
-                  <li><a href="#two" data-toggle="tab" data-target="#two, #myCarousel" data-slide-to="1">Two</a></li>
-                  <li><a href="#twee" data-toggle="tab" data-target="#twee, #myCarousel" data-slide-to="2">Twee</a></li>
-                  <li><a href="#fwoo" data-toggle="tab" data-target="#fwoo, #myCarousel" data-slide-to="3">Fwoo</a></li>
+                  <li class="active"><a href="#one" id="" data-toggle="tab" data-target="#one, #collection" data-slide-to="0">One</a></li>
+                  <li><a href="#two" data-toggle="tab" data-target="#two, #collection" data-slide-to="1">Two</a></li>
+                  <li><a href="#three" data-toggle="tab" data-target="#three, #collection" data-slide-to="2">Three</a></li>
                 </ul>
               </div>
     </div><!-- /.carousel -->
 
     <div id="handCards" style="height: 300px;overflow: auto;">
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-        <div style="float:left;height:100%"><img src="sampleGreen.svg" alt="Card" style="height:100%"></div>
-
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
+        <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
     </div>
   </div>
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!-- Masonry or Draggable-->
 </body>
 </html>
