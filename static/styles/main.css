@@ -66,3 +66,9 @@ height: 400px;
   .handCardImage{
     height:100%;
   }
+
+  #userInfo{
+    padding: 3vh 0;
+    text-align: center;
+    display: none;
+  }

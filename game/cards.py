@@ -167,7 +167,9 @@ class PropertyCards(Cards):
             color = receivedData['color']
         else:
             color1, color2 = self.id[3:5], self.id[5:7]
-            colorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {color1}, 1 for {color2}'))
+            receivedData = player.modified_input('choose_value', socketio, dataToSend = {'message':'Choose the color code of the property set where you would like to add this card','0':color1,'1':color2})
+            colorIndex = int(receivedData['value'])
+            # colorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {color1}, 1 for {color2}'))
             color = color1 if colorIndex == 0 else color2
 
         propertySet = player.findPropertySetByColor(color)
@@ -203,8 +205,7 @@ class ActionCards(Cards):
                 nonlocal bank
                 bank = int(data['value'])
                 print(f'Received Value: {bank}')
-
-            socketio.emit('cash_action',{},room=player.pRoomId, callback= setValue)
+            socketio.emit('choose_value',{'message':'How do you want to play this Action Card?','0':'Action','1':'Cash'},room=player.pRoomId, callback= setValue)
             while bank==-2:
                 print('Waiting for input')
                 sleep(1)

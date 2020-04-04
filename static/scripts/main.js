@@ -211,10 +211,10 @@
             element = event.target;
             parent = element.parentElement;
             playIndex = Number(element.value[0]);
-            if (element.value[1]=='A'){
-                parent.innerHTML=element.value.substr(1,)+'<button value="1" onclick="cashOrAction(event)" class = "justCreated'+tempClassNo+'">Cash</button><button onclick="cashOrAction(event)" value="0" class = "justCreated'+tempClassNo+'">Action</button>'; //TODO: Generalise the function for choice
-            }
-            tempClassNo+=1;
+            // if (element.value[1]=='A'){
+            //     parent.innerHTML=element.value.substr(1,)+'<button value="1" onclick="cashOrAction(event)" class = "justCreated'+tempClassNo+'">Cash</button><button onclick="cashOrAction(event)" value="0" class = "justCreated'+tempClassNo+'">Action</button>'; //TODO: Generalise the function for choice
+            // }
+            // tempClassNo+=1;
             $("."+element.className.split(" ")[0]).remove();
             console.log(playIndex);
         }
@@ -370,21 +370,41 @@
             $("."+element.className.split(" ")[0]).remove();
         }
 
-        socket.on('cash_action',function(data,callback){
+        var chosenValue = -1;
+        function chooseValue(event){
+            element = event.target;
+            chosenValue = Number(element.value);
+            console.log(chosenValue);
+            $("."+element.className.split(" ")[0]).remove();            
+        }
+
+        socket.on('choose_value',function(data,callback){
             $("#wait").css("display", "block");
+            // console.log('In choose value:', data);
+            var choiceButtons = "";
+            choiceButtons += '<span class = "justCreated'+tempClassNo+'">'+data['message']+'</span>';
+            console.log("Choice Buttons HTML",choiceButtons);
+            console.log(data);
+            for(i in data){
+                if(i!='message')
+                choiceButtons+= '<button value="'+i+'" class = "justCreated'+tempClassNo+'" onclick=chooseValue(event)>'+data[i]+'</button>';
+            }
+            tempClassNo+=1;
+            console.log(choiceButtons)
+            $("#userInfo").html(choiceButtons)
             // socket.send()
         
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
                 console.log('Waiting for chance');
-                if(cashOrActionValue !=-1)
+                if(chosenValue !=-1)
                 {
                     clearInterval(myVar);
-                    choice = cashOrActionValue;
+                    choice = chosenValue;
                     console.log('Breaking out of loop');
                     callback({'value':choice});
-                    cashOrActionValue = -1;
+                    chosenValue = -1;
                     $("#wait").css("display", "none");
                 }
                 else

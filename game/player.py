@@ -190,7 +190,9 @@ class Player():
         else:
             propertyColor1, propertyColor2 = actionCard.id[3:5], actionCard.id[5:7]
             if self.findPropertySetByColor(propertyColor1).currentSetSize()>0 and self.findPropertySetByColor(propertyColor2).currentSetSize()>0:
-                propertyColorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {propertyColor1}, 1 for {propertyColor2}')) #TODO:
+                receivedData = self.modified_input('choose_value', socketio, dataToSend = {'message':'Choose the color code of the property set for which you want the rent: ','0':propertyColor1,'1':propertyColor2})
+                propertyColorIndex = int(receivedData['value'])
+                # propertyColorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {propertyColor1}, 1 for {propertyColor2}')) #TODO:
                 propertyColor = propertyColor1 if propertyColorIndex == 0 else propertyColor2
             elif self.findPropertySetByColor(propertyColor1).currentSetSize()>0:
                 propertyColor = propertyColor1
@@ -202,7 +204,9 @@ class Player():
 
         if self.chanceNo < self.cardsToPlay:
             if 'ADR' in [card.id for card in self.handCards]:
-                if int(input('Do you want to play double the rent? 1 for yes')):
+                receivedData = self.modified_input('choose_value', socketio, dataToSend = {'message':'Do you want to play double the rent?:','0':'No','1':'Yes'})
+                if int(receivedData['value']):
+                # int(input('Do you want to play double the rent? 1 for yes')):
                     self.doubleRent = True
         propertySet = self.findPropertySetByColor(propertyColor)
         moneyToAsk = propertySet.currentRent()
@@ -391,7 +395,9 @@ class Player():
 
     def wantToPlayJSN(self):
         if 'AJN' in [card.id for card in self.handCards]:
-            return int(input(f'Do you, player {self.id}, want to play JSN? 1 or 0'))
+            receivedData = self.modified_input('choose_value', socketio, dataToSend = {'message':'Do you want to play JSN?','0':'No','1':'Yes'}) # returns {'value':1/0}
+            return int(receivedData['value'])
+            # return int(input(f'Do you, player {self.id}, want to play JSN? 1 or 0'))
         return 0
 
     def requestMoney(self, player, money, socketio):
@@ -461,7 +467,7 @@ class Player():
             #     #Arrange Cards
             #     self.arrangeCards(players, socketio)
                 # pass
-        self.arrangeCards(players)
+        self.arrangeCards(players, socketio)
         return True
 
     def showPropertyCollection(self):
@@ -499,7 +505,7 @@ class Player():
             removeIndex = int(input('Which Card to remove?'))
             drawPile.insert(0,self.handCards.pop(removeIndex)) 
 
-    def modified_input(self, funcToCall, socketio):
+    def modified_input(self, funcToCall, socketio, dataToSend={}):
         data =None
         def setValue(receivedData):
             nonlocal data
@@ -507,7 +513,7 @@ class Player():
             # playIndex = int(data['value'])
             print(f'Received Data: {receivedData}')
 
-        socketio.emit(funcToCall,{},room=self.pRoomId, callback= setValue)
+        socketio.emit(funcToCall,dataToSend,room=self.pRoomId, callback= setValue)
         while data is None:
             print('Waiting for input')
             sleep(1)
