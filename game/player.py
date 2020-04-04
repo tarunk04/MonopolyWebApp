@@ -419,7 +419,7 @@ class Player():
             propertySet = player.findPropertySetByColor(fromColor)
             propertyCard = propertySet.findPropertyCardById(propertyCardId)
             try:
-                self.requestPropertyCard(player,propertySet, propertyCard): #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
+                self.requestPropertyCard(player,propertySet, propertyCard) #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')
                 return False
@@ -430,7 +430,7 @@ class Player():
             player = players.findPlayerById(playerId)
             propertySet = player.findPropertySetByColor(fromColor)
             try:
-                self.requestPropertySet(player, propertySet):
+                self.requestPropertySet(player, propertySet)
                 #Arrange Cards
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')
@@ -440,7 +440,7 @@ class Player():
         elif money and playerId: #Money from a particular player. Eg - Multicolor Rent/ DebtCollector
             player = players.findPlayerById(playerId)
             try:
-                self.requestMoney(player, money,socketio):
+                self.requestMoney(player, money,socketio)
                 #Arrange Cards
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')
