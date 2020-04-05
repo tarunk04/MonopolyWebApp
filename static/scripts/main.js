@@ -206,11 +206,11 @@
         //+++++++++++++++++++++++++++++++++++++++++++1
 
 
-        var playIndex = -1;
+        var playIndex = -2;
         function playCard(event){
             element = event.target;
             parent = element.parentElement;
-            playIndex = Number(element.value[0]);
+            playIndex = Number(element.value);
             // if (element.value[1]=='A'){
             //     parent.innerHTML=element.value.substr(1,)+'<button value="1" onclick="cashOrAction(event)" class = "justCreated'+tempClassNo+'">Cash</button><button onclick="cashOrAction(event)" value="0" class = "justCreated'+tempClassNo+'">Action</button>'; //TODO: Generalise the function for choice
             // }
@@ -227,13 +227,13 @@
 
             function myTimer() {
                 console.log('Waiting for chance');
-                if(playIndex !=-1)
+                if(playIndex !=-2)
                 {
                     clearInterval(myVar);
                     choice = playIndex;
                     console.log('Breaking out of loop');
                     callback({'value':choice});
-                    playIndex = -1;
+                    playIndex = -2;
                     $("#wait").css("display", "none");
                 }
                 else
@@ -494,10 +494,12 @@
             for(card in data['handcards']){
                 handCardHTML += '<div class="handCard"><img src="/static/images/cards/'+data['handcards'][card]+'.svg" class="handCardImage" alt="Card">';
                 if(chance){
-                    handCardHTML+='<button onclick="playCard(event)" value="'+card + data['handcards'][card]+'" class = "justCreated'+tempClassNo+'">Play</button>';
+                    handCardHTML+='<button onclick="playCard(event)" value="'+card +'" class = "justCreated'+tempClassNo+'">Play</button>';
                 }
                 handCardHTML+='</div>';
             }
+            if(chance)
+            handCardHTML+='<button onclick="playCard(event)" value="-1" class = "justCreated'+tempClassNo+'">PASS</button>';
             tempClassNo+=1;
             handCardHTML+= '</div>';
             $("#handCards").html(handCardHTML);
