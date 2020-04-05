@@ -53,6 +53,14 @@ class PropertySet():
         self.hotel = None
         # self.rentList = self.rentMapFunc(self.color)
 
+    def getAllCards(self):
+        allCards = [card.id for card in self.propertyCards]
+        if self.house:
+            allCards.append(self.house.id)
+        if self.hotel:
+            allCards.append(self.hotel.id)
+        return allCards
+
     def currentSetSize(self):
         return len(self.propertyCards)
 
@@ -115,6 +123,9 @@ class PropertySet():
     def addHouse(self, actionCard):
         if not self.isFullSet():
             print('The propertySet is not Full')
+            return False
+        if self.house:
+            print('The set already has a house')
             return False
         self.house = actionCard
         return True
