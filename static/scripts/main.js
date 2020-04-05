@@ -421,7 +421,7 @@
                 for(player in data['players']){
                     tabHTML+='<li class="active"><a href="#'+player+'" id="" data-toggle="tab" data-target="#'+player+', #board" data-slide-to="'+player[1]+'">'+data['players'][player]['username']+'</a></li>';
                 }
-                console.log("This is the inner html",tabHTML);
+                // console.log("This is the inner html",tabHTML);
                 $("#tabsInner").html(tabHTML);
                 if(tabHTML!="")initialTabSetup=true;
             }
@@ -469,9 +469,11 @@
                 collectionHTML+='<div id="'+player+'" class="'+playerClass+'">\
                 <div class="row" style="height:100%">\
                 <div class="col-md-8 propertyCollection" >\
+                <span class="propertyValueSpan">Total Value: $'+data['players'][player]['totalValue']+'M</span>\
                     '+ propertyCollectionHTML + '\
                 </div>\
                 <div class="col-md-4 bankCollection">\
+                <span class="bankValueSpan">Bank Value: $'+data['players'][player]['moneyValue']+'M</span>\
                     ' +  bankCollectionHTML + '\
                 </div>\
                 </div>\

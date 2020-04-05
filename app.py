@@ -81,7 +81,9 @@ def json_game_data(players, dealer):
                 'chance':player.chance,
                 'chance_no':player.chanceNo,
                 'username':player.name,
-                'proom_id':player.pRoomId,
+                'proom_id':player.pRoomId,            
+                'moneyValue':player.moneyValue,
+                'totalValue':player.totalValue,
                 'bank_collection':[card.id for card in player.bankCollection],
                 'property_collection':{propertySet.color:[card.id for card in propertySet.propertyCards] for propertySet in player.propertyCollection}
                 } for player in players.players}

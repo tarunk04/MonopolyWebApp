@@ -230,11 +230,11 @@ class Player():
         return True
 
 
-    def requestPropertySet(self, player, propertySet):
+    def requestPropertySet(self, player, propertySet, socketio):
         if not propertySet.isFullSet():
             print('The property set is not complete. Cannot use deal breaker!!')
             return 0
-        jsn = player.wantToPlayJSN()
+        jsn = player.wantToPlayJSN(socketio)
         if not jsn:
             for _ in range(propertySet.currentSetSize()):
                 self.exchangeBuffer.append(propertySet.propertyCards.pop())
@@ -252,12 +252,12 @@ class Player():
             player.handCards.remove(jsnCard)
             return False
 
-    def requestPropertyCard(self, player,propertySet, propertyCard):
-        jsn = player.wantToPlayJSN()
+    def requestPropertyCard(self, player,propertySet, propertyCard, socketio):
+        jsn = player.wantToPlayJSN(socketio)
         if not jsn:
             propertySet.propertyCards.remove(propertyCard)
             player.totalValue -= propertyCard.value
-            self.totalValue += propertyCard.value
+            # self.totalValue += propertyCard.value
             self.exchangeBuffer.append(propertyCard)
             return True
         else:
@@ -297,7 +297,7 @@ class Player():
             if cardToGiveId[0] == 'M':
                 cardToGive = self.findMoneyCardById(cardToGiveId)
                 self.bankCollection.remove(cardToGive)
-                self.moneyValue-= cardToGive.value
+                # self.moneyValue-= cardToGive.value
                 valueCollected += cardToGive.value
                 player.exchangeBuffer.append(cardToGive)
 
@@ -316,7 +316,7 @@ class Player():
                 if not fromPropertySet:
                     cardToGive = self.findEncashedActionCardById(cardToGiveId)
                     self.bankCollection.remove(cardToGive)
-                    self.moneyValue-= cardToGive.value
+                    # self.moneyValue-= cardToGive.value
                     valueCollected += cardToGive.value
                     player.exchangeBuffer.append(cardToGive)
 
@@ -326,7 +326,7 @@ class Player():
                     cardToGiveSet = self.findPropertySetByColor(cardToGiveSetColor)
                     cardToGive = cardToGiveSet.findActionCardById(cardToGiveId)
                     cardToGiveSet.removePropertyCard(cardToGive)
-                    self.totalValue -= cardToGive.value
+                    # self.totalValue -= cardToGive.value
                     valueCollected += cardToGive.value
                     player.exchangeBuffer.append(cardToGive)
     
@@ -393,7 +393,7 @@ class Player():
                     pickActionCard = pickPropertySet.removeHouse()
                     keepPropertySet.addHouse(pickActionCard)
 
-    def wantToPlayJSN(self):
+    def wantToPlayJSN(self, socketio):
         if 'AJN' in [card.id for card in self.handCards]:
             receivedData = self.modified_input('choose_value', socketio, dataToSend = {'message':'Do you want to play JSN?','0':'No','1':'Yes'}) # returns {'value':1/0}
             return int(receivedData['value'])
@@ -401,16 +401,16 @@ class Player():
         return 0
 
     def requestMoney(self, player, money, socketio):
-        jsn = player.wantToPlayJSN()
+        jsn = player.wantToPlayJSN(socketio)
         if not jsn:
             # self.exchangeBuffer = player.giveMoney(self, money)
             player.giveMoney(self, money, socketio)
             for card in self.exchangeBuffer:
                 player.totalValue -= card.value
-                self.totalValue += card.value
+                # self.totalValue += card.value #Handled in exchangeBuffer -> card.playCard
                 if isinstance(card, MoneyCards) or (isinstance(card, ActionCards) and card.isCashed):
                     player.moneyValue -= card.value
-                    self.moneyValue += card.value
+                    # self.moneyValue += card.value #Handled in exchangeBuffer -> card.playCard
             return True
         else:
             print('Handle JSN Case') 
@@ -425,7 +425,7 @@ class Player():
             propertySet = player.findPropertySetByColor(fromColor)
             propertyCard = propertySet.findPropertyCardById(propertyCardId)
             try:
-                self.requestPropertyCard(player,propertySet, propertyCard) #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
+                self.requestPropertyCard(player,propertySet, propertyCard, socketio) #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')
                 return False
@@ -436,7 +436,7 @@ class Player():
             player = players.findPlayerById(playerId)
             propertySet = player.findPropertySetByColor(fromColor)
             try:
-                self.requestPropertySet(player, propertySet)
+                self.requestPropertySet(player, propertySet, socketio)
                 #Arrange Cards
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')
@@ -446,7 +446,7 @@ class Player():
         elif money and playerId: #Money from a particular player. Eg - Multicolor Rent/ DebtCollector
             player = players.findPlayerById(playerId)
             try:
-                self.requestMoney(player, money,socketio)
+                self.requestMoney(player, money, socketio)
                 #Arrange Cards
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')

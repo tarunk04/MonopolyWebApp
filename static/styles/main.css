@@ -70,5 +70,27 @@ height: 400px;
   #userInfo{
     padding: 3vh 0;
     text-align: center;
-    display: none;
+    display: block;
+  }
+
+  .propertyValueSpan{
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: white;
+    z-index: 50;
+    border-radius: 5px;
+  }
+
+  .bankValueSpan{
+    position: fixed;
+    top: 10px;
+    background: white;
+    z-index: 50;
+    border-radius: 5px;
+  }
+
+  button{
+    position:relative;
+    z-index:50;
   }
