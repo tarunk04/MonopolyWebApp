@@ -337,8 +337,7 @@ class Player():
             print(card, end=' ')
         print()
 
-    def arrangeCards(self, players, socketio):
-        # print('+++++++++++++++++++')
+    def arrangeExchangeBuffer(self, players, socketio):
         self.showExchangeBuffer()
         if len(self.exchangeBuffer)!= 0:
             # print('The length of exchangeBuffer is', len(self.exchangeBuffer))
@@ -356,19 +355,45 @@ class Player():
         # self.showExchangeBuffer()
         # print('+++++++++++++++++++')
 
+    def arrangeCards(self, players, socketio):
+        # print('+++++++++++++++++++')
         while True:
             self.showPropertyCollection()
             # arrange = int(input('Wish to arrange?Property(1) or Hotel/House(2) or None(-1)'))
-            arrange = -1 #TODO: Hardcoded for now
-            if arrange == -1:
-                # self.showBankCollection()
-                # self.showPropertyCollection()
-                break
+            arrange = 1 #TODO: Hardcoded for now
             
-            elif arrange == 1:
-                pickPropertyColor = input('Enter the set color from which to pick the property')
-                pickPropertyCardId = input('Enter the id of the property Card to pick')
-                keepPropertyColor = input('Enter the set color from which to keep the property')
+            if arrange == 1:
+                receivedData = self.modified_input('choose_own_property', socketio)
+                pickPropertyCardId = receivedData['value']
+                pickPropertyColor = receivedData['color']
+                # pickPropertyColor = input('Enter the set color from which to pick the property')
+                # pickPropertyCardId = input('Enter the id of the property Card to pick')
+                #HERE
+                if not pickPropertyCardId[1:3] == 'WC':
+                    keepPropertyColor = pickPropertyCardId[1:3]
+                elif pickPropertyCardId[3:5] == 'XX':
+                    # color = input('Enter the color code of the property set where you would like to add this card: ')
+                    receivedData = self.modified_input('choose_own_set', socketio)
+                    keepPropertyColor = receivedData['color']
+                else:
+                    color1, color2 = pickPropertyCardId[3:5], pickPropertyCardId[5:7]
+                    receivedData = self.modified_input('choose_value', socketio, dataToSend = {'message':'Choose the color code of the property set where you would like to add this card','0':color1,'1':color2})
+                    colorIndex = int(receivedData['value'])
+                    # colorIndex = int(input(f'Choose the color code of the property set where you would like to add this card: 0 for {color1}, 1 for {color2}'))
+                    keepPropertyColor = color1 if colorIndex == 0 else color2
+
+                # propertySet = self.findPropertySetByColor(keepPropertyColor)
+                # if not propertySet.addPropertyCard(self):#Some error in adding property - Full set
+                #     # Try adding it to XX:
+                #     mixedPropertySet = self.findPropertySetByColor('XX')
+                #     if not mixedPropertySet.addPropertyCard(self):
+                #         return False
+                # player.totalValue += self.value #Arranging doesn't change values
+                # return True
+                ###############
+                # receivedData =self.modified_input('choose_own_set', socketio)
+                # keepPropertyColor = receivedData['color']
+                # keepPropertyColor = input('Enter the set color from which to keep the property')
                 
                 pickPropertySet = self.findPropertySetByColor(pickPropertyColor)
                 keepPropertySet = self.findPropertySetByColor(keepPropertyColor)
@@ -378,8 +403,8 @@ class Player():
                 
             elif arrange == 2:
                 pickPropertyColor = input('Enter the set color from which to pick the property')
-                pickPropertyCardId = input('Enter the id of the property Card to pick')
-                keepPropertyColor = input('Enter the set color from which to keep the property')
+                # pickPropertyCardId = input('Enter the id of the property Card to pick')
+                keepPropertyColor = input('Enter the set color in which to keep the property')
                 
                 hotel = input('Enter 1 for hotel and 0 for house')
                 if hotel:
@@ -392,6 +417,8 @@ class Player():
                     keepPropertySet = self.findPropertySetByColor(keepPropertyColor)
                     pickActionCard = pickPropertySet.removeHouse()
                     keepPropertySet.addHouse(pickActionCard)
+
+            break
 
     def wantToPlayJSN(self, socketio):
         if 'AJN' in [card.id for card in self.handCards]:
@@ -467,7 +494,7 @@ class Player():
             #     #Arrange Cards
             #     self.arrangeCards(players, socketio)
                 # pass
-        self.arrangeCards(players, socketio)
+        self.arrangeExchangeBuffer(players, socketio)
         return True
 
     def showPropertyCollection(self):
@@ -535,6 +562,10 @@ class Player():
         
         if playIndex == -1:
             return -1
+            
+        elif playIndex == -2:
+            self.arrangeCards(players,socketio)
+            return 0
 
         if isinstance(self.handCards[playIndex], ActionCards):
             success = self.handCards[playIndex].playCard(self, dealer = dealer, players = players, socketio= socketio)

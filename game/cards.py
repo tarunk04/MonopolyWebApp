@@ -14,16 +14,16 @@ class Cards():
         #10 - edc344ff
         if id in ['ADB']: #ba94cdff
             return 5
-        elif id in ['AHT','AJN','PDb','PDg','PWCDbDg','PWCDgBl']: #63bde4ff
+        elif id in ['AHT','AJN','PDb','PDg','PWCDbDg','PWCDgBl','PWCLbBl']: #63bde4ff
             return 4
 
         elif id in ['ASD','AFD','ADC','AHS','ARTXX', 'PYl','PRd','PWCRdYl']:#c1e38bff
             return 3
 
-        elif id in ['AIB','POr','PPk','PLg','PBl','PWCLbBr','PWCLbBl','PWCLgBl','PWCOrPk']: #daad79ff
+        elif id in ['AIB','POr','PPk','PLg','PBl','PWCLgBl','PWCOrPk']: #daad79ff
             return 2
 
-        elif id in ['ADR','APG','PBr','PLb'] or id.startswith('ART'): #ffe476ff
+        elif id in ['ADR','APG','PBr','PLb','PLbBr'] or id.startswith('ART'): #ffe476ff
             return 1
 
         elif id in ['PWCXX']:
@@ -133,9 +133,9 @@ class PropertySet():
         if not self.isFullSet():
             print('The propertySet is not Full')
             return False
-        if not self.house:
-            print('Cannot attach a hotel before adding house')
-            return False
+        # if not self.house:
+        #     print('Cannot attach a hotel before adding house')
+        #     return False
         self.hotel = actionCard
         return True
 

@@ -206,7 +206,7 @@
         //+++++++++++++++++++++++++++++++++++++++++++1
 
 
-        var playIndex = -2;
+        var playIndex = undefined;
         function playCard(event){
             element = event.target;
             parent = element.parentElement;
@@ -229,19 +229,20 @@
             }
             // socket.send()
             $("#handCards").append('<button value="-1" onclick="playCard(event)" class = "justCreated'+tempClassNo+'">PASS</button>');
+            $("#handCards").append('<button value="-2" onclick="playCard(event)" class = "justCreated'+tempClassNo+'">ARRANGE</button>');
             tempClassNo+=1;
         
             var myVar = setInterval(myTimer, 1000);
 
             function myTimer() {
                 console.log('Waiting for chance');
-                if(playIndex !=-2)
+                if(playIndex!=undefined)
                 {
                     clearInterval(myVar);
                     choice = playIndex;
                     console.log('Breaking out of loop');
                     callback({'value':choice});
-                    playIndex = -2;
+                    playIndex = undefined;
                     $("#wait").css("display", "none");
                 }
                 else
