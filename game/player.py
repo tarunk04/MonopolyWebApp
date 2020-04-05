@@ -504,7 +504,7 @@ class Player():
         for _ in range(extraCards):
             removeIndex = int(self.modified_input('take_input', socketio)['value'])
             # removeIndex = int(input('Which Card to remove?'))
-            drawPile.insert(0,self.handCards.pop(removeIndex)) 
+            drawPile.insert(0,self.handCards.pop(removeIndex).id) 
 
     def modified_input(self, funcToCall, socketio, dataToSend={}):
         data =None
@@ -552,7 +552,7 @@ class Player():
 
         if self.doubleRent:
             doubleRentCard = [card for card in self.handCards if card.id=='ADR'][0]
-            dealer.discardedCards.append(doubleRentCard) #TODO:X
+            dealer.discardedCards.append(doubleRentCard.id) #TODO:X
             self.handCards.remove(doubleRentCard)
             self.chanceNo += 1 #TODO:X
             self.doubleRent = False

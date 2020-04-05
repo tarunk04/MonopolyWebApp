@@ -221,7 +221,15 @@
 
         socket.on('take_input',function(data,callback){
             $("#wait").css("display", "block");
+            // $(".handCard").append('<button onclick="playCard(event)" class = "justCreated'+tempClassNo+'">Play</button>');
+            var elements = $(".handCard");
+            for(var i =0;i<elements.length;i++)
+            {   
+                $(elements[i]).append('<button value="'+i+'" onclick="playCard(event)" class = "justCreated'+tempClassNo+'">Play</button>');
+            }
             // socket.send()
+            $("#handCards").append('<button value="-1" onclick="playCard(event)" class = "justCreated'+tempClassNo+'">PASS</button>');
+            tempClassNo+=1;
         
             var myVar = setInterval(myTimer, 1000);
 
@@ -493,13 +501,13 @@
             // <div class="handCard"><img src="sampleGreen.svg" class="handCardImage" alt="Card"></div>
             for(card in data['handcards']){
                 handCardHTML += '<div class="handCard"><img src="/static/images/cards/'+data['handcards'][card]+'.svg" class="handCardImage" alt="Card">';
-                if(chance){
-                    handCardHTML+='<button onclick="playCard(event)" value="'+card +'" class = "justCreated'+tempClassNo+'">Play</button>';
-                }
+                // if(chance){
+                //     handCardHTML+='<button onclick="playCard(event)" value="'+card +'" class = "justCreated'+tempClassNo+'">Play</button>';
+                // }
                 handCardHTML+='</div>';
             }
-            if(chance)
-            handCardHTML+='<button onclick="playCard(event)" value="-1" class = "justCreated'+tempClassNo+'">PASS</button>';
+            // if(chance)
+            // handCardHTML+='<button onclick="playCard(event)" value="-1" class = "justCreated'+tempClassNo+'">PASS</button>';
             tempClassNo+=1;
             handCardHTML+= '</div>';
             $("#handCards").html(handCardHTML);
