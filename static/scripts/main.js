@@ -344,10 +344,10 @@
 
         socket.on("choose_player", function(data, callback){
             $("#wait").css("display", "block");
-            var otherPlayers = $(".otherPlayer");
+            var otherPlayers = $(".otherPlayerTab");
             for(var i=0;i<otherPlayers.length;i++)
             {
-                otherPlayers[i].innerHTML+='<button value="'+otherPlayers[i].id+'" onclick="choosePlayer(event)" class = "justCreated'+tempClassNo+'">Choose</button>';
+                otherPlayers[i].innerHTML+='<button value="'+otherPlayers[i].id.substr(0,2)+'" onclick="choosePlayer(event)" class = "justCreated'+tempClassNo+'">Choose</button>';
             }
             tempClassNo+=1;
             var myVar = setInterval(myTimer, 1000);
@@ -424,11 +424,20 @@
         socket.on('game_data', function(data){
             console.log('GAME SETUP: ',data);
             collectionHTML = '';
+            
             // console.log('This is the initial phase',initialTabSetup);
             if(initialTabSetup==false){
                 var tabHTML = '';
                 for(player in data['players']){
-                    tabHTML+='<li class="active"><a href="#'+player+'" id="" data-toggle="tab" data-target="#'+player+', #board" data-slide-to="'+player[1]+'">'+data['players'][player]['username']+'</a></li>';
+                    otherPlayer = true;
+                    if(data['players'][player]['username'] == userName){
+                        otherPlayer = false;
+                    }
+
+                    playerClass = "playerTab ";
+                    if(otherPlayer)playerClass += "otherPlayerTab";
+                    else playerClass += "selfPlayerTab";
+                    tabHTML+='<li class="active"><a href="#'+player+'" id="'+player+'tab" class = "'+ playerClass+'"data-toggle="tab" data-target="#'+player+', #board" data-slide-to="'+player[1]+'">'+data['players'][player]['username']+'</a></li>';
                 }
                 // console.log("This is the inner html",tabHTML);
                 $("#tabsInner").html(tabHTML);
