@@ -174,6 +174,7 @@ class PropertyCards(Cards):
             color = self.id[1:3]
         elif self.id[3:5] == 'XX':
             # color = input('Enter the color code of the property set where you would like to add this card: ')
+            player.sendMessageToPlayer('Choose the color code of the property set where you would like to add this card.', socketio)
             receivedData = player.modified_input('choose_own_set', socketio)
             color = receivedData['color']
         else:
@@ -187,8 +188,10 @@ class PropertyCards(Cards):
         if not propertySet.addPropertyCard(self):#Some error in adding property - Full set
             # Try adding it to XX:
             mixedPropertySet = player.findPropertySetByColor('XX')
+            color = 'XX'
             if not mixedPropertySet.addPropertyCard(self):
                 return False
+        player.sendMessageToAll(f'{player.name} added a {self.id} card to the {color} property set.', socketio)
         player.totalValue += self.value #added Value
         return True
         # player.propertyCollection.append(self)
@@ -229,6 +232,7 @@ class ActionCards(Cards):
             player.bankCollection.append(self)
             player.moneyValue += self.value #Added Value
             player.totalValue += self.value #added Value
+            player.sendMessageToAll(f'{player.name} added ${self.value} M to bank.', socketio)
             return True
 
         functionInitials = self.id[1:3]
@@ -237,14 +241,16 @@ class ActionCards(Cards):
             if not player.__getattribute__(function)(self, dealer, players, socketio):
                 return False
         elif functionInitials == 'JN':
+            player.sendMessageToPlayer('Cannot play just say no until an action has been taken against you.', socketio)
             print('Cannot play just say no until an action has been taken against you')
             return False
         elif functionInitials == 'DR':
+            player.sendMessageToPlayer('Can play this card only with a rent card.', socketio)
             print('Can play this card only with a rent card.')
             return False
         elif functionInitials == 'PG':
             function = self.actionMapFunc(functionInitials)
-            if not player.__getattribute__(function)(dealer): #socketio not required
+            if not player.__getattribute__(function)(dealer, socketio):
                 return False
         elif functionInitials in ['HS','HT']:
             function = self.actionMapFunc(functionInitials)            

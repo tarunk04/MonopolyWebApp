@@ -17,6 +17,7 @@ class Player():
     def __init__(self, id):
         self.name = None
         self.pRoomId = None
+        self.roomId = None
         self.id = 'U'+str(id)
         self.handCards = []
         self.exchangeBuffer = []
@@ -82,12 +83,14 @@ class Player():
         fromPropertySet.remove(propertyCard)
         toPropertySet.append(propertyCard)
 
-    def PassGo(self, dealer):
+    def PassGo(self, dealer, socketio):
         if not self.drawCards(dealer):
             return False
+        self.sendMessageToAll(f'{self.name} played a PassGo.',socketio)
         return True
 
     def House(self,actionCard, socketio):
+        self.sendMessageToPlayer('Choose the color of the property Set to which the House is to be added.', socketio)
         receivedData = self.modified_input('choose_own_set', socketio)
         toColor = receivedData['color']
         # toColor = input('Enter the color of the property Set to which the House is to be added.')
@@ -95,9 +98,11 @@ class Player():
         if not propertySet.addHouse(actionCard):
             return False
         self.totalValue += actionCard.value
+        self.sendMessageToAll(f'{self.name} added a House to {toColor} set.',socketio)
         return True
 
     def Hotel(self,actionCard, socketio):
+        self.sendMessageToPlayer('Choose the color of the property Set to which the Hotel is to be added.', socketio)
         receivedData = self.modified_input('choose_own_set', socketio)
         toColor = receivedData['color']
         # toColor = input('Enter the color of the property Set to which the Hotel is to be added.')
@@ -105,10 +110,12 @@ class Player():
         if not propertySet.addHotel(actionCard):
             return False
         self.totalValue+= actionCard.value
+        self.sendMessageToAll(f'{self.name} added a House to {toColor} set.',socketio)
         return True
     
     def DealBreaker(self, players, socketio):
         if not any([propertySet.isFullSet() for player in players.players for propertySet in player.propertyCollection  if player.id != self.id]):
+            self.sendMessageToPlayer('No full set to take!!!', socketio)
             print("No full set to take!!!")
             return False
         # playerId = input('Enter the user ID')
@@ -116,12 +123,14 @@ class Player():
         receivedData = self.modified_input('choose_others_set', socketio)
         playerId = receivedData['playerId']
         fromColor = receivedData['color']
+        self.sendMessageToAll(f'DealBreaker played. {self.name} wants {fromColor} set from {playerId}.', socketio)
         if not self.requestCard(players, playerId = playerId, fromColor = fromColor, socketio= socketio): #asks and arranges card on successful request
             return False
         return True
         
     def SlyDeal(self, players, socketio):
         if not any([len(propertySet.propertyCards)> 0 for player in players.players for propertySet in player.propertyCollection]): #NOTE this
+            self.sendMessageToPlayer('No property to take!!!', socketio)
             print('No property to take !!!')
             return False
         # playerId = input('Enter the user ID')
@@ -131,16 +140,19 @@ class Player():
         playerId = receivedData['playerId']
         fromColor = receivedData['color']
         # propertyCardId = input('Enter the id of the property Card')
+        self.sendMessageToAll(f'SlyDeal Played. {self.name} wants a {propertyCardId} property from {playerId}.', socketio)
         if not self.requestCard(players, playerId = playerId, propertyCardId = propertyCardId, fromColor = fromColor, socketio=socketio):
             return False
         return True
 
     def ForcedDeal(self, players, socketio):
         if not any([len(propertySet.propertyCards) >0 for propertySet in self.propertyCollection]):
+            self.sendMessageToPlayer('No property to give.', socketio)
             print('No property to give!!!')
             return False
 
         if not any([len(propertySet.propertyCards)> 0 for player in players.players for propertySet in player.propertyCollection if player.id != self.id]): #NOTE this
+            self.sendMessageToPlayer('No property to take.', socketio)
             print('No property to take !!!')
             return False
 
@@ -157,6 +169,8 @@ class Player():
         givePropertyCardId = receivedData['value']
         givePropertyColor = receivedData['color']
         
+        self.sendMessageToAll(f'ForcedDeal Played. {self.name} wants a {takePropertyCardId} property in exchange of {givePropertyCardId} property from {playerId}.', socketio)
+
         if not self.requestCard(players, playerId = playerId, propertyCardId = takePropertyCardId, fromColor = takePropertyColor, socketio=socketio):
             return False
         # if success:
@@ -171,13 +185,18 @@ class Player():
         if len(players.players) == 2:
             playerId  = [player.id for player in players.players if self.id != player.id][0]
         else:
+            self.sendMessageToPlayer('Choose the player from whom you want to collect $5 M.', socketio)
             receivedData = self.modified_input('choose_player', socketio)
             playerId = receivedData['playerId']
+        
+        self.sendMessageToAll(f'DebtCollector Played. {self.name} wants $5 M from {playerId}.', socketio)
+
         if not self.requestCard(players, playerId=playerId, money = 5,socketio= socketio):
             return False
         return True
 
     def ItsMyBirthday(self, players, socketio): #Although not required
+        self.sendMessageToAll(f"It is {self.name}'s birthday. Hand him a $2 M gift.", socketio)
         if not self.requestCard(players, money= 2, socketio= socketio):
             return False
         return True
@@ -185,6 +204,7 @@ class Player():
     def RentCard(self, actionCard, dealer, players, socketio):
         if actionCard.id[3:5] == "XX":
             # propertyColor = input('Enter the set color for which to take the rent.')
+            self.sendMessageToPlayer('Choose the set color for which to take the rent.', socketio)
             receivedData = self.modified_input('choose_own_set', socketio)
             propertyColor = receivedData['color']
         else:
@@ -199,6 +219,7 @@ class Player():
             elif self.findPropertySetByColor(propertyColor2).currentSetSize()>0:
                 propertyColor = propertyColor2
             else:
+                self.sendMessageToPlayer('No poperty card of any of these colours!!!!',socketio)
                 print('No poperty card of any of these colours!!!!')
                 return False
 
@@ -210,10 +231,14 @@ class Player():
                     self.doubleRent = True
         propertySet = self.findPropertySetByColor(propertyColor)
         moneyToAsk = propertySet.currentRent()
+
+        message = f'Rent Card played for property {propertyColor}'
         if self.doubleRent:
             moneyToAsk*=2
-
+            message+=' with double rent'
+        message += '.'
         print(f'User {self.id} wants {moneyToAsk} money.')
+        message +=f'User {self.name} wants ${moneyToAsk} M '
         if actionCard.id == 'ARTXX':
             if len(players.players) == 2:
                 playerId  = [player.id for player in players.players if self.id != player.id][0]
@@ -221,10 +246,13 @@ class Player():
                 receivedData = self.modified_input('choose_player', socketio)
                 playerId = receivedData['playerId']
                 # playerId = input('Enter the id of the player from whom to take the rent')
+            message += f'from {playerId}.'
+            self.sendMessageToAll(message,socketio)
             if not self.requestCard(players, playerId = playerId, money = moneyToAsk, socketio= socketio):
                 return False
             return True
-        
+        message+= 'from everyone.'
+        self.sendMessageToAll(message, socketio)
         if not self.requestCard(players, money = moneyToAsk, socketio= socketio):
             return False #TODO: Atomicity
         return True
@@ -247,6 +275,7 @@ class Player():
                 propertySet.house = None
             return True
         else:
+            self.sendMessageToAll(f'Player {self.name} played a Just Say No.', socketio)
             print('Handle JSN Case') 
             jsnCard = [card for card in player.handCards if card.id == 'AJN'][0]
             player.handCards.remove(jsnCard)
@@ -261,6 +290,7 @@ class Player():
             self.exchangeBuffer.append(propertyCard)
             return True
         else:
+            self.sendMessageToAll(f'Player {self.name} played a Just Say No.', socketio)
             print('Handle JSN Case') 
             jsnCard = [card for card in player.handCards if card.id == 'AJN'][0]
             player.handCards.remove(jsnCard)
@@ -440,6 +470,7 @@ class Player():
                     # self.moneyValue += card.value #Handled in exchangeBuffer -> card.playCard
             return True
         else:
+            self.sendMessageToAll(f'Player {self.name} played a Just Say No.', socketio)
             print('Handle JSN Case') 
             jsnCard = [card for card in player.handCards if card.id == 'AJN'][0]
             player.handCards.remove(jsnCard)
@@ -533,6 +564,15 @@ class Player():
             # removeIndex = int(input('Which Card to remove?'))
             drawPile.insert(0,self.handCards.pop(removeIndex).id) 
 
+    def sendMessageToPlayer(self,message, socketio):
+        socketio.emit('notification',message, room=self.pRoomId)
+
+    def sendMessageToAll(self, message, socketio):
+        socketio.emit('notification', message , room = self.roomId)
+
+    def clearMessage(self, socketio):
+        socketio.emit('notification', '' , room = self.roomId)
+        
     def modified_input(self, funcToCall, socketio, dataToSend={}):
         data =None
         def setValue(receivedData):

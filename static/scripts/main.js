@@ -522,3 +522,8 @@
             handCardHTML+= '</div>';
             $("#handCards").html(handCardHTML);
         });
+
+        socket.on('notification', function(data,callback){
+            console.log(data);
+            $("#userInfo").html('<p>'+data+'</p>');
+        });

@@ -106,6 +106,7 @@ def initialise_game(room):
     for ((username, p_roomid), player) in zip(rooms[room], players.players):
         player.name = username
         player.pRoomId = p_roomid
+        player.roomId = room
 
     socketio.emit('game_data',json_game_data(players,dealer), room = room)
     socketio.emit('player_data',json_player_data(player,dealer), room=p_roomid)
@@ -119,6 +120,7 @@ def initialise_game(room):
     while(not player.hasWon()):
         print('+++++++++++++++++++++++++++++')
         print(f'Player - {player.id}')
+        player.sendMessageToAll(f"It's {player.name}'s turn.", socketio)
         print('+++++++++++++++++++++++++++++')
         player.chance =True
         # p_roomid = rooms[room][playerChance][1]
@@ -133,6 +135,7 @@ def initialise_game(room):
         print(len(dealer.drawPile), len(player.handCards))
         while player.chanceNo <= player.cardsToPlay:
             val = player.playCard(socketio= socketio, dealer  = dealer, players = players) #TODO check the value of val
+            player.clearMessage(socketio)
             if val == -1:
                 break
             # player.chanceNo +=1  Will increase this in the lower functions
@@ -145,6 +148,7 @@ def initialise_game(room):
             socketio.emit('game_data',json_game_data(players,dealer), room = room)
 
         if player.hasWon():
+            player.sendMessageToAll(f"{player.id} has won the game.")
             print('***************************************')
             print(f'Player - {player.id} has won the game.')
             print('***************************************')
