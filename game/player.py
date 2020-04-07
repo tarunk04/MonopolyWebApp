@@ -29,6 +29,7 @@ class Player():
         self.totalValue = 0
         self.chance = False
         self.chanceNo = -1
+        self.jsnPlayed = False
         self.doubleRent = False
         self.initialisePropertyCollection()
 
@@ -174,6 +175,9 @@ class Player():
         if not self.requestCard(players, playerId = playerId, propertyCardId = takePropertyCardId, fromColor = takePropertyColor, socketio=socketio):
             return False
         # if success:
+        if self.jsnPlayed:
+            self.jsnPlayed = False
+            return True
         player = players.findPlayerById(playerId)
         if not player.requestCard(players, playerId= self.id, propertyCardId = givePropertyCardId,fromColor = givePropertyColor, socketio= socketio):
             print('Atomicity to be handled') #TODO:
@@ -483,7 +487,9 @@ class Player():
             propertySet = player.findPropertySetByColor(fromColor)
             propertyCard = propertySet.findPropertyCardById(propertyCardId)
             try:
-                self.requestPropertyCard(player,propertySet, propertyCard, socketio) #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards.
+                jsnSafe = self.requestPropertyCard(player,propertySet, propertyCard, socketio) #Returns true or false. In case of True, the exchange buffer of the player is filled with the required cards. He can then arrange the acquired cards. In case of false, Just Say No has been played against the player.
+                if not jsnSafe:
+                    self.jsnPlayed = True
             except Exception as e:
                 print(f'Some error occured while requesting card: {e}')
                 return False
