@@ -523,7 +523,42 @@
             $("#handCards").html(handCardHTML);
         });
 
+        const notificationContainer = document.getElementById('notification-container');
+
+        const NOTIFICATION_TYPES = {
+            INFO: 'info',
+            SUCCESS: 'success',
+            WARNING: 'warning',
+            DANGER: 'danger'
+        };
+
+        function addNotification(type, text){
+            const newNotification = document.createElement('div');
+            newNotification.classList.add('notification', `notification-${type}`);
+            
+            const innerNotification = `<strong>${type} : </strong> ${text}`;
+            
+            newNotification.innerHTML = innerNotification;
+            
+            notificationContainer.appendChild(newNotification);
+            
+            return newNotification;
+        }
+
+        function removeNotification(notification)
+        {
+            notification.classList.add('hide');
+            setTimeout(()=>{
+                notificationContainer.removeChild(notification);
+            }, 500);
+        }
+
         socket.on('notification', function(data,callback){
             console.log(data);
-            $("#userInfo").html('<p>'+data+'</p>');
+            // $("#userInfo").html('<p>'+data+'</p>');
+            const info = addNotification(NOTIFICATION_TYPES.SUCCESS, data);
+
+            setTimeout(() => {
+                removeNotification(info);
+            }, 20000);
         });

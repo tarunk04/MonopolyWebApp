@@ -41,6 +41,7 @@ class MoneyCards(Cards):
         player.bankCollection.append(self)
         player.moneyValue += self.value #added Value
         player.totalValue += self.value #added Value
+        player.sendMessageToAll(f'{player.name} added ${self.value} M to bank.', socketio)
         return True
 
 class PropertySet():

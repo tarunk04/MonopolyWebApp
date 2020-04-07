@@ -135,7 +135,7 @@ def initialise_game(room):
         print(len(dealer.drawPile), len(player.handCards))
         while player.chanceNo <= player.cardsToPlay:
             val = player.playCard(socketio= socketio, dealer  = dealer, players = players) #TODO check the value of val
-            player.clearMessage(socketio)
+            # player.clearMessage(socketio)
             if val == -1:
                 break
             # player.chanceNo +=1  Will increase this in the lower functions

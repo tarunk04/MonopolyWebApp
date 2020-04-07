@@ -1,3 +1,12 @@
+body{
+  background: linear-gradient(to bottom, #BFE2CA 50%, #6CA1C9 100%);
+  height: 100vh;
+  background-attachment: fixed;
+  background-repeat: no-repeat;
+	background-size: cover;
+	margin: 0;
+}
+
 /* Carousel base class */
 .carousel {
 width:80vw;
@@ -13,7 +22,7 @@ z-index: 10;
 /* Declare heights because of positioning of img element */
 .carousel .item {
 height: 400px;
-background-color: #777;
+/* background-color: #777; */
 }
 .carousel-inner > .item > img {
 position: absolute;
@@ -40,11 +49,11 @@ height: 400px;
   }
 
   .propertyCollection{
-    height:100%;overflow-x: scroll;
+    height:100%;overflow-y: scroll;
   }
   
   .bankCollection{
-    height:100%;overflow-x: scroll;
+    height:100%;overflow-y: scroll;
   }
 
   .cashList{
@@ -93,4 +102,84 @@ height: 400px;
   button{
     position:relative;
     z-index:50;
+  }
+
+  .reverseCard {
+    -moz-transform: scale(-1, -1);
+    -o-transform: scale(-1, -1);
+    -webkit-transform: scale(-1, -1);
+    transform: scale(-1, -1);
+  }
+
+  #tabsInner li{
+    text-align:center;
+  }
+
+  .playerTab{
+    display: inline-block !important;
+    border-radius: 40px !important;
+  }
+
+  /*Notifications*/
+  .notification-container{
+    position: fixed;
+    top: 15px;
+    right: 15px;
+    width: 500px;
+    z-index: 50;
+    max-width: calc(100% - 30px);
+  }
+  
+  .notification{
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 3px 6px rgb(0, 0, 0, 0.2), 0 3px 6px rgb(0, 0, 0, 0.3);
+    color: #fff;
+    font-size: 14px;
+    padding: 15px 20px;
+    line-height: 20px;
+    margin-bottom: 15px;
+    animation: grow 0.5s ease-in forwards;
+  }
+  @keyframes grow{
+    from {
+      opacity: 0;
+      transform: scale(0.5);
+    }
+    to{
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  
+  .notification.hide{
+    animation: shrink 0.4s ease-out forwards;
+  }
+  @keyframes shrink{
+    to{
+      opacity: 0;
+      transform: scale(0.6);
+    }
+  }
+  
+  .notification strong{
+    font-size: 12px;
+    line-height: 20px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  
+  .notification-info{
+    background-color: #00cae3;
+  }
+  
+  .notification-success{
+    background-color: #55b559f2;
+  }
+  
+  .notification-warning{
+    background-color: #ff9e0f;
+  }
+  .notification-danger{
+    background-color: #f55145;
   }
