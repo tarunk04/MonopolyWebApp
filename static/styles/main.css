@@ -7,6 +7,19 @@ body{
 	margin: 0;
 }
 
+#home{
+  text-align: center;
+}
+
+#username{
+  display: inline-block;
+  width: 40%;
+}
+
+#joinRoomId{
+  display: inline-block;
+  width: 40%;
+}
 /* Carousel base class */
 .carousel {
 width:80vw;
@@ -135,7 +148,7 @@ height: 400px;
     border-radius: 5px;
     box-shadow: 0 3px 6px rgb(0, 0, 0, 0.2), 0 3px 6px rgb(0, 0, 0, 0.3);
     color: #fff;
-    font-size: 14px;
+    font-size: 20px;
     padding: 15px 20px;
     line-height: 20px;
     margin-bottom: 15px;

@@ -55,8 +55,8 @@
 
 
         socket.on('modify_lobby',function(data){
-            modifiedHTML = 'Players in lobby: '
-            for(i in data){ modifiedHTML+= '<div>'+data[i]+'</div>';}
+            modifiedHTML = '<h2>Players in lobby: </h2>'
+            for(i in data){ modifiedHTML+= '<h4>'+data[i]+'</h4>';}
             document.getElementById("users").innerHTML = modifiedHTML;
             if (host)document.getElementById("lobby").getElementsByTagName("button")[0].style.display="block";
             console.log('Players in lobby: '+data);
@@ -536,7 +536,7 @@
             const newNotification = document.createElement('div');
             newNotification.classList.add('notification', `notification-${type}`);
             
-            const innerNotification = `<strong>${type} : </strong> ${text}`;
+            const innerNotification = `${text}`;
             
             newNotification.innerHTML = innerNotification;
             
