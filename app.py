@@ -148,7 +148,8 @@ def initialise_game(room):
             socketio.emit('game_data',json_game_data(players,dealer), room = room)
 
         if player.hasWon():
-            player.sendMessageToAll(f"{player.id} has won the game.", socketio)
+            player.sendMessageToAll(f"{player.name} has won the game.", socketio)
+            socketio.emit('new_game', room= room)
             print('***************************************')
             print(f'Player - {player.id} has won the game.')
             print('***************************************')

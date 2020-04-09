@@ -38,6 +38,7 @@
             document.getElementById('home').style.display="none";
             document.getElementById('lobby').style.display="block";
             document.getElementById('lobbyRoomid').innerText=roomId;
+            document.getElementById('board').style.display = "none";
             socket.emit('enter_lobby', roomId);
         }
         
@@ -524,6 +525,11 @@
             tempClassNo+=1;
             handCardHTML+= '</div>';
             $("#handCards").html(handCardHTML);
+        });
+
+        socket.on('new_game', function(data){
+            console.log('Entering lobby');
+            setTimeout(()=>{switchToLobby(roomId);}, 3000);
         });
 
         const notificationContainer = document.getElementById('notification-container');
