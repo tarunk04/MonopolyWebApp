@@ -145,6 +145,9 @@ class PropertySet():
         if not self.isFullSet():
             print('The propertySet is not Full')
             return False
+        if self.hotel:
+            print('The set already has a hotel')
+            return False
         # if not self.house:
         #     print('Cannot attach a hotel before adding house')
         #     return False
@@ -255,7 +258,7 @@ class ActionCards(Cards):
                 return False
         elif functionInitials in ['HS','HT']:
             function = self.actionMapFunc(functionInitials)            
-            if not player.__getattribute__(function)(self, socketio):
+            if not player.__getattribute__(function)(self,players, socketio):
                 return False
         else: # DB, SD, FD, IB, DC
             function = self.actionMapFunc(functionInitials)            

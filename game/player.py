@@ -90,7 +90,11 @@ class Player():
         self.sendMessageToAll(f'{self.name} played a PassGo.',socketio)
         return True
 
-    def House(self,actionCard, socketio):
+    def House(self,actionCard, players, socketio):
+        if not any([propertySet.isFullSet() for player in players.players for propertySet in player.propertyCollection  if player.id != self.id]):
+            self.sendMessageToPlayer('No full set present!!!', socketio)
+            print("No full set to take!!!")
+            return False
         self.sendMessageToPlayer('Choose the color of the property Set to which the House is to be added.', socketio)
         receivedData = self.modified_input('choose_own_set', socketio)
         toColor = receivedData['color']
@@ -102,7 +106,11 @@ class Player():
         self.sendMessageToAll(f'{self.name} added a House to {toColor} set.',socketio)
         return True
 
-    def Hotel(self,actionCard, socketio):
+    def Hotel(self,actionCard, players, socketio):
+        if not any([propertySet.isFullSet() for player in players.players for propertySet in player.propertyCollection  if player.id != self.id]):
+            self.sendMessageToPlayer('No full set present!!!', socketio)
+            print("No full set present!!!")
+            return False
         self.sendMessageToPlayer('Choose the color of the property Set to which the Hotel is to be added.', socketio)
         receivedData = self.modified_input('choose_own_set', socketio)
         toColor = receivedData['color']
@@ -279,7 +287,7 @@ class Player():
                 propertySet.house = None
             return True
         else:
-            self.sendMessageToAll(f'Player {self.name} played a Just Say No.', socketio)
+            self.sendMessageToAll(f'Player {player.name} played a Just Say No.', socketio)
             print('Handle JSN Case') 
             jsnCard = [card for card in player.handCards if card.id == 'AJN'][0]
             player.handCards.remove(jsnCard)
@@ -294,7 +302,7 @@ class Player():
             self.exchangeBuffer.append(propertyCard)
             return True
         else:
-            self.sendMessageToAll(f'Player {self.name} played a Just Say No.', socketio)
+            self.sendMessageToAll(f'Player {player.name} played a Just Say No.', socketio)
             print('Handle JSN Case') 
             jsnCard = [card for card in player.handCards if card.id == 'AJN'][0]
             player.handCards.remove(jsnCard)
@@ -474,7 +482,7 @@ class Player():
                     # self.moneyValue += card.value #Handled in exchangeBuffer -> card.playCard
             return True
         else:
-            self.sendMessageToAll(f'Player {self.name} played a Just Say No.', socketio)
+            self.sendMessageToAll(f'Player {player.name} played a Just Say No.', socketio)
             print('Handle JSN Case') 
             jsnCard = [card for card in player.handCards if card.id == 'AJN'][0]
             player.handCards.remove(jsnCard)

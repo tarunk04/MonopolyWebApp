@@ -8,6 +8,8 @@
             return socket;
         }
 
+        var audio = new Audio('/static/sounds/ding_trim.mp3');
+
         socket.on('connect', function() {
             socket.send(userName + ' has connected!');
         });
@@ -221,6 +223,7 @@
 
         socket.on('take_input',function(data,callback){
             $("#wait").css("display", "block");
+            audio.play();
             // $(".handCard").append('<button onclick="playCard(event)" class = "justCreated'+tempClassNo+'">Play</button>');
             var elements = $(".handCard");
             for(var i =0;i<elements.length;i++)
