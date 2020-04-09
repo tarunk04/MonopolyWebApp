@@ -73,28 +73,9 @@ def on_join(data): #TODO Number of players restriction
     join_room(room)
     send(username + ' has entered the room.', room=room) #Send only to the members in the room
 
-def json_game_data(players, dealer):
-    
-    return {'drawpile':dealer.drawPile,
-     'playpile':dealer.discardedCards,
-    'players': { player.id: {
-                'chance':player.chance,
-                'chance_no':player.chanceNo,
-                'username':player.name,
-                'proom_id':player.pRoomId,            
-                'moneyValue':player.moneyValue,
-                'totalValue':player.totalValue,
-                'bank_collection':[card.id for card in player.bankCollection],
-                'property_collection':{propertySet.color:propertySet.getAllCards() for propertySet in player.propertyCollection}
-                } for player in players.players}
-    }
-
-def json_player_data(player,dealer):
-    return {'id':player.id,
-    'chance':player.chance,
-    'name':player.name,
-    'proom_id':player.pRoomId,
-    'handcards':[card.id for card in player.handCards]}
+#TODO: Dealer data in json format.
+    # 'drawpile':dealer.drawPile,
+    #  'playpile':dealer.discardedCards,
 
 def initialise_game(room):
     numPlayers = len(rooms[room])
@@ -108,8 +89,8 @@ def initialise_game(room):
         player.pRoomId = p_roomid
         player.roomId = room
 
-    socketio.emit('game_data',json_game_data(players,dealer), room = room)
-    socketio.emit('player_data',json_player_data(player,dealer), room=p_roomid)
+    socketio.emit('game_data',players.json_game_data(), room = room)
+    socketio.emit('player_data',player.json_player_data(), room=p_roomid)
 
     # for ((username, p_roomid), player) in zip(rooms[room], players.players):
         # emit('player_data', player, room=id)
@@ -129,8 +110,8 @@ def initialise_game(room):
         player.drawCards(dealer)
         player.chanceNo = 1
 
-        socketio.emit('player_data',json_player_data(player,dealer), room = player.pRoomId)
-        socketio.emit('game_data',json_game_data(players,dealer), room = room)
+        socketio.emit('player_data',player.json_player_data(), room = player.pRoomId)
+        socketio.emit('game_data',players.json_game_data(), room = room)
         
         print(len(dealer.drawPile), len(player.handCards))
         while player.chanceNo <= player.cardsToPlay:
@@ -139,13 +120,13 @@ def initialise_game(room):
             if val == -1:
                 break
             # player.chanceNo +=1  Will increase this in the lower functions
-            socketio.emit('player_data',json_player_data(player,dealer), room = player.pRoomId)    
-            socketio.emit('game_data',json_game_data(players,dealer), room = room)
+            socketio.emit('player_data',player.json_player_data(), room = player.pRoomId)    
+            socketio.emit('game_data',players.json_game_data(), room = room)
 
         if len(player.handCards)>7:
             player.discardCards(dealer.drawPile, socketio)
-            socketio.emit('player_data',json_player_data(player,dealer), room = player.pRoomId)        
-            socketio.emit('game_data',json_game_data(players,dealer), room = room)
+            socketio.emit('player_data',player.json_player_data(), room = player.pRoomId)        
+            socketio.emit('game_data',players.json_game_data(), room = room)
 
         if player.hasWon():
             player.sendMessageToAll(f"{player.name} has won the game.", socketio)
@@ -156,7 +137,7 @@ def initialise_game(room):
             break
 
         player.chance = False
-        socketio.emit('player_data',json_player_data(player,dealer), room = player.pRoomId)        
+        socketio.emit('player_data',player.json_player_data(), room = player.pRoomId)        
 
         playerChance = (playerChance+1)%numPlayers
         player = players.players[playerChance]    

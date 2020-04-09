@@ -505,6 +505,64 @@
 
         });
 
+        socket.on('player_collection_data', function(data){
+            console.log('PLAYER COLLECTION SETUP: ',data);
+            collectionHTML = '';
+
+            // for(collection in data){
+                propertyCollectionHTML = '<ul class="propertySetList">';
+                for(set in data['property_collection']){
+                    thisSet = data['property_collection'][set];
+                    if(thisSet.length!= 0) 
+                    {
+                        propertyCollectionHTML+='<li name="'+set+'" class="propertySet">';
+                        // propertyCollectionHTML+='<div>'+set+'</div>';
+                        propertyCollectionHTML+='<ul class="propertyCardList">';
+                        var topDistance = 0;
+                        var topDistanceAttribute = "";
+                        for(card in thisSet){
+                            if(topDistance!=0)
+                            topDistanceAttribute = 'position:absolute;top:'+topDistance+'%;'
+                            else
+                            topDistanceAttribute="";
+                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card" style="'+topDistanceAttribute+'"><img src ="/static/images/cards/'+thisSet[card]+'.svg" alt="Card" style="height:100%"></li>'
+                            topDistance+=20;
+                        }
+                        propertyCollectionHTML+='</ul>';
+                        propertyCollectionHTML+='</li>';
+                    }
+                }
+                propertyCollectionHTML+= '</ul>';
+                bankCollectionHTML = '<ul class="cashList">';
+                for(card in data['bank_collection']){
+                    cardId = data['bank_collection'][card];
+                    bankCollectionHTML += '<li name="'+cardId+'" class="bankCard Card"><img src=/static/images/cards/'+cardId+'.svg alt="Card" height="100%"></li>';
+                }
+                bankCollectionHTML+= '</ul>';
+                otherPlayer = false;
+                // if(player == userId){
+                //     otherPlayer = false;
+                // }
+
+                playerClass = "player ";
+                if(otherPlayer)playerClass += "item otherPlayer";
+                else playerClass += "item selfPlayer active"; //By default collection of the player is shown
+
+                collectionHTML+='<div id="'+userId+'" class="'+playerClass+'">\
+                <div class="row" style="height:100%">\
+                <div class="col-md-8 propertyCollection" >\
+                <span class="propertyValueSpan">Total Value: $'+data['totalValue']+'M</span>\
+                    '+ propertyCollectionHTML + '\
+                </div>\
+                <div class="col-md-4 bankCollection">\
+                <span class="bankValueSpan">Bank Value: $'+data['moneyValue']+'M</span>\
+                    ' +  bankCollectionHTML + '\
+                </div>\
+                </div>\
+            </div>';
+            $("#collection #"+userId).html(collectionHTML);
+        });
+
         socket.on('player_data', function(data){
             console.log('PLAYER SETUP: ',data);
             userId = data['id'];

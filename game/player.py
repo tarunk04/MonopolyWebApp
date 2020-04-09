@@ -13,6 +13,19 @@ class Players():
     def findPlayerById(self, playerId):
         return [player for player in self.players if player.id == playerId][0]
 
+    def json_game_data(self):
+        return {'players': { player.id: {
+                    'chance':player.chance,
+                    'chance_no':player.chanceNo,
+                    'username':player.name,
+                    'proom_id':player.pRoomId,            
+                    'moneyValue':player.moneyValue,
+                    'totalValue':player.totalValue,
+                    'bank_collection':[card.id for card in player.bankCollection],
+                    'property_collection':{propertySet.color:propertySet.getAllCards() for propertySet in player.propertyCollection}
+                    } for player in self.players}
+                }
+
 class Player():
     def __init__(self, id):
         self.name = None
@@ -76,6 +89,20 @@ class Player():
         else:
             print('Action card should have been house or hotel')
 
+    def json_player_data(self):
+        return {'id':self.id,
+        'chance':self.chance,
+        'name':self.name,
+        'proom_id':self.pRoomId,
+        'handcards':[card.id for card in self.handCards]}
+
+    def json_player_collection_data(self):
+        return {'moneyValue':self.moneyValue,
+                    'totalValue':self.totalValue,
+                    'bank_collection':[card.id for card in self.bankCollection],
+                    'property_collection':{propertySet.color:propertySet.getAllCards() for propertySet in self.propertyCollection} 
+                }
+
     def arrangeWildCard(self, propertyCardId, fromColor, toColor):
         fromPropertySet = self.findPropertySetByColor(fromColor)
         toPropertySet = self.findPropertySetByColor(toColor)
@@ -91,7 +118,7 @@ class Player():
         return True
 
     def House(self,actionCard, players, socketio):
-        if not any([propertySet.isFullSet() for player in players.players for propertySet in player.propertyCollection  if player.id != self.id]):
+        if not any([propertySet.isFullSet() for propertySet in self.propertyCollection]):
             self.sendMessageToPlayer('No full set present!!!', socketio)
             print("No full set to take!!!")
             return False
@@ -107,7 +134,7 @@ class Player():
         return True
 
     def Hotel(self,actionCard, players, socketio):
-        if not any([propertySet.isFullSet() for player in players.players for propertySet in player.propertyCollection  if player.id != self.id]):
+        if not any([propertySet.isFullSet() for propertySet in self.propertyCollection]):
             self.sendMessageToPlayer('No full set present!!!', socketio)
             print("No full set present!!!")
             return False
@@ -371,7 +398,9 @@ class Player():
                     # self.totalValue -= cardToGive.value
                     valueCollected += cardToGive.value
                     player.exchangeBuffer.append(cardToGive)
-    
+
+            socketio.emit('player_collection_data',self.json_player_collection_data(), room = self.pRoomId)
+        
         #Choose cards and give
     def showExchangeBuffer(self):
         print('Exchange Buffer: ')
@@ -529,6 +558,7 @@ class Player():
             for player in players.players:
                 if player.id == self.id:
                     continue #Don't collect rent from one self
+                player.sendMessageToAll(f'Player - {player.name} turn to pay rent to {self.name}.',socketio)
                 print(f'Player - {player.id} turn to pay rent to {self.id}.')
                 try:
                     self.requestMoney(player, money, socketio)
