@@ -593,14 +593,22 @@
 
         $("#collection").on('mousedown','.Card',function(event){
             element = event.target; 
+            initPos = element.style.position;
             element.style.zIndex = 50; 
+            if(initPos == "")
+            element.style.position = 'relative';
+            else
             element.style.position = 'absolute';
+            setTimeout(()=>{
+                element.style.zIndex = '';
+                element.style.position = initPos;
+            }, 3000);
         });
 
-        $("#collection").on('mouseup','.Card',function(event){
-            element = event.target; 
-            element.style.zIndex = ""; 
-        });
+        // $("#collection").on('mouseup','.Card',function(event){
+        //     element = event.target; 
+        //     element.style.zIndex = ""; 
+        // });
 
         socket.on('new_game', function(data){
             console.log('Entering lobby');

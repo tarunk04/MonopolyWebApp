@@ -400,6 +400,7 @@ class Player():
                     player.exchangeBuffer.append(cardToGive)
 
             socketio.emit('player_collection_data',self.json_player_collection_data(), room = self.pRoomId)
+            self.sendMessageToPlayer(f'Value collected: {valueCollected} (out of {money}).', socketio)
         
         #Choose cards and give
     def showExchangeBuffer(self):
