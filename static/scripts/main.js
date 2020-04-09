@@ -461,11 +461,14 @@
                         var topDistance = 0;
                         var topDistanceAttribute = "";
                         for(card in thisSet){
+                            var reverseClass = "";
+                            if(thisSet[card].substr(1,2)=='WC' && thisSet[card].substr(3,2) != set)
+                                    reverseClass = "reverseCard";
                             if(topDistance!=0)
                             topDistanceAttribute = 'position:absolute;top:'+topDistance+'%;'
                             else
                             topDistanceAttribute="";
-                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card" style="'+topDistanceAttribute+'"><img src ="/static/images/cards/'+thisSet[card]+'.svg" alt="Card" style="height:100%"></li>'
+                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card '+reverseClass+'" style="'+topDistanceAttribute+'"><img src ="/static/images/cards/'+thisSet[card]+'.svg" alt="Card" style="height:100%"></li>'
                             topDistance+=20;
                         }
                         propertyCollectionHTML+='</ul>';
@@ -521,11 +524,14 @@
                         var topDistance = 0;
                         var topDistanceAttribute = "";
                         for(card in thisSet){
+                            var reverseClass = "";
+                            if(thisSet[card].substr(1,2)=='WC' && thisSet[card].substr(3,2) != set)
+                                    reverseClass = "reverseCard";
                             if(topDistance!=0)
                             topDistanceAttribute = 'position:absolute;top:'+topDistance+'%;'
                             else
                             topDistanceAttribute="";
-                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card" style="'+topDistanceAttribute+'"><img src ="/static/images/cards/'+thisSet[card]+'.svg" alt="Card" style="height:100%"></li>'
+                            propertyCollectionHTML+= '<li name="'+thisSet[card]+'" class="propertyCard Card '+reverseClass+'" style="'+topDistanceAttribute+'"><img src ="/static/images/cards/'+thisSet[card]+'.svg" alt="Card" style="height:100%"></li>'
                             topDistance+=20;
                         }
                         propertyCollectionHTML+='</ul>';

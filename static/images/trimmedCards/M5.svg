@@ -1,0 +1,78 @@
+<svg xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" width="210mm" height="297mm" viewBox="28.423828125 38.615482330322266 161.7738037109375 211.66665649414062" version="1.1" id="svg8" inkscape:version="0.92.4 (5da689c313, 2019-01-14)" sodipodi:docname="M5.svg">
+  <defs id="defs2">
+    <pattern inkscape:stockid="Polka dots, small" id="Polkadots-small" patternTransform="translate(0,0) scale(5,5)" height="10" width="10" patternUnits="userSpaceOnUse" inkscape:collect="always">
+      <circle id="circle5408" r="0.05" cy="0.810" cx="2.567" style="fill:black;stroke:none"/>
+      <circle id="circle5410" r="0.05" cy="2.33" cx="3.048" style="fill:black;stroke:none"/>
+      <circle id="circle5412" r="0.05" cy="2.415" cx="4.418" style="fill:black;stroke:none"/>
+      <circle id="circle5414" r="0.05" cy="3.029" cx="1.844" style="fill:black;stroke:none"/>
+      <circle id="circle5416" r="0.05" cy="1.363" cx="6.08" style="fill:black;stroke:none"/>
+      <circle id="circle5418" r="0.05" cy="4.413" cx="5.819" style="fill:black;stroke:none"/>
+      <circle id="circle5420" r="0.05" cy="4.048" cx="4.305" style="fill:black;stroke:none"/>
+      <circle id="circle5422" r="0.05" cy="3.045" cx="5.541" style="fill:black;stroke:none"/>
+      <circle id="circle5424" r="0.05" cy="5.527" cx="4.785" style="fill:black;stroke:none"/>
+      <circle id="circle5426" r="0.05" cy="5.184" cx="2.667" style="fill:black;stroke:none"/>
+      <circle id="circle5428" r="0.05" cy="1.448" cx="7.965" style="fill:black;stroke:none"/>
+      <circle id="circle5430" r="0.05" cy="5.049" cx="7.047" style="fill:black;stroke:none"/>
+      <circle id="circle5432" r="0.05" cy="0.895" cx="4.340" style="fill:black;stroke:none"/>
+      <circle id="circle5434" r="0.05" cy="0.340" cx="7.125" style="fill:black;stroke:none"/>
+      <circle id="circle5436" r="0.05" cy="1.049" cx="9.553" style="fill:black;stroke:none"/>
+      <circle id="circle5438" r="0.05" cy="2.689" cx="7.006" style="fill:black;stroke:none"/>
+      <circle id="circle5440" r="0.05" cy="2.689" cx="8.909" style="fill:black;stroke:none"/>
+      <circle id="circle5442" r="0.05" cy="4.407" cx="9.315" style="fill:black;stroke:none"/>
+      <circle id="circle5444" r="0.05" cy="3.870" cx="7.820" style="fill:black;stroke:none"/>
+      <circle id="circle5446" r="0.05" cy="5.948" cx="8.270" style="fill:black;stroke:none"/>
+      <circle id="circle5448" r="0.05" cy="7.428" cx="7.973" style="fill:black;stroke:none"/>
+      <circle id="circle5450" r="0.05" cy="8.072" cx="9.342" style="fill:black;stroke:none"/>
+      <circle id="circle5452" r="0.05" cy="9.315" cx="8.206" style="fill:black;stroke:none"/>
+      <circle id="circle5454" r="0.05" cy="9.475" cx="9.682" style="fill:black;stroke:none"/>
+      <circle id="circle5456" r="0.05" cy="6.186" cx="9.688" style="fill:black;stroke:none"/>
+      <circle id="circle5458" r="0.05" cy="6.296" cx="3.379" style="fill:black;stroke:none"/>
+      <circle id="circle5460" r="0.05" cy="8.204" cx="2.871" style="fill:black;stroke:none"/>
+      <circle id="circle5462" r="0.05" cy="8.719" cx="4.59" style="fill:black;stroke:none"/>
+      <circle id="circle5464" r="0.05" cy="9.671" cx="3.181" style="fill:black;stroke:none"/>
+      <circle id="circle5466" r="0.05" cy="7.315" cx="5.734" style="fill:black;stroke:none"/>
+      <circle id="circle5468" r="0.05" cy="6.513" cx="6.707" style="fill:black;stroke:none"/>
+      <circle id="circle5470" r="0.05" cy="9.670" cx="5.730" style="fill:black;stroke:none"/>
+      <circle id="circle5472" r="0.05" cy="8.373" cx="6.535" style="fill:black;stroke:none"/>
+      <circle id="circle5474" r="0.05" cy="7.154" cx="4.37" style="fill:black;stroke:none"/>
+      <circle id="circle5476" r="0.05" cy="7.25" cx="0.622" style="fill:black;stroke:none"/>
+      <circle id="circle5478" r="0.05" cy="5.679" cx="0.831" style="fill:black;stroke:none"/>
+      <circle id="circle5480" r="0.05" cy="8.519" cx="1.257" style="fill:black;stroke:none"/>
+      <circle id="circle5482" r="0.05" cy="6.877" cx="1.989" style="fill:black;stroke:none"/>
+      <circle id="circle5484" r="0.05" cy="3.181" cx="0.374" style="fill:black;stroke:none"/>
+      <circle id="circle5486" r="0.05" cy="1.664" cx="1.166" style="fill:black;stroke:none"/>
+      <circle id="circle5488" r="0.05" cy="0.093" cx="1.151" style="fill:black;stroke:none"/>
+      <circle id="circle5490" r="0.05" cy="10.093" cx="1.151" style="fill:black;stroke:none"/>
+      <circle id="circle5492" r="0.05" cy="4.451" cx="1.302" style="fill:black;stroke:none"/>
+      <circle id="circle5494" r="0.05" cy="3.763" cx="3.047" style="fill:black;stroke:none"/>
+    </pattern>
+  </defs>
+  <sodipodi:namedview id="base" pagecolor="#ffffff" bordercolor="#666666" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:zoom="0.7" inkscape:cx="125.87695" inkscape:cy="563.48266" inkscape:document-units="mm" inkscape:current-layer="layer1" showgrid="false" inkscape:window-width="1920" inkscape:window-height="1017" inkscape:window-x="-8" inkscape:window-y="-8" inkscape:window-maximized="1"/>
+  <metadata id="metadata5">
+    <rdf:RDF>
+      <cc:Work rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+        <dc:title/>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g inkscape:label="Layer 1" inkscape:groupmode="layer" id="layer1">
+    <g style="fill:#ba94cd;fill-opacity:1" id="g4767" transform="translate(4.9893062,3.9309576)">
+      <rect ry="15.119047" style="fill:#ba94cd;fill-opacity:1;stroke:#000000;stroke-width:1.05833328;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" y="34.684525" x="23.434521" height="211.66666" width="161.7738" id="rect3713"/>
+    </g>
+    <rect style="opacity:1;fill:url(#Polkadots-small);fill-opacity:1;stroke:#000000;stroke-width:1.76388884;stroke-miterlimit:4;stroke-dasharray:3.52777778, 1.76388889, 0.88194444, 1.76388889;stroke-dashoffset:0;stroke-opacity:1" id="rect885" width="130.21371" height="181.476" x="44.187134" y="53.18795" rx="0" ry="5.6921692"/>
+    <g id="g2388" transform="translate(3.4018062,7.6351244)">
+      <circle transform="translate(1.5875,-3.7041669)" r="19.654762" cy="58.497017" cx="48.229767" id="path4558" style="fill:#d3bbdf;fill-opacity:1;stroke:#000000;stroke-width:1.05833328;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <text transform="matrix(0.83776362,0,0,1.1936541,1.5875,-3.7041669)" id="text5105" y="53.991329" x="39.251858" style="font-style:normal;font-weight:normal;font-size:12.6328392px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.31582099" xml:space="preserve"><tspan style="stroke-width:0.31582099" id="tspan5103" y="53.991329" x="39.251858" sodipodi:role="line"><tspan id="tspan5101" style="font-weight:bold;font-size:13.47502899px;stroke-width:0.31582099" y="53.991329" x="39.251858">$5 M</tspan></tspan></text>
+    </g>
+    <g transform="translate(115.21177,170.51667)" id="g2388-8">
+      <circle transform="translate(1.5875,-3.7041669)" r="19.654762" cy="58.497017" cx="48.229767" id="path4558-3" style="fill:#d3bbdf;fill-opacity:1;stroke:#000000;stroke-width:1.05833328;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"/>
+      <text transform="matrix(0.83776362,0,0,1.1936541,1.5875,-3.7041669)" id="text5105-5" y="53.991329" x="39.251858" style="font-style:normal;font-weight:normal;font-size:12.6328392px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.31582099" xml:space="preserve"><tspan style="stroke-width:0.31582099" id="tspan5103-8" y="53.991329" x="39.251858" sodipodi:role="line"><tspan id="tspan5101-4" style="font-weight:bold;font-size:13.47502899px;stroke-width:0.31582099" y="53.991329" x="39.251858">$5 M</tspan></tspan></text>
+    </g>
+    <g id="g1549">
+      <ellipse style="fill:#d3bbdf;fill-opacity:1;stroke:#000000;stroke-width:3.52777767;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" id="path2419" cx="110.60361" cy="146.17101" rx="46.959255" ry="42.469128"/>
+    </g>
+    <text xml:space="preserve" style="font-style:normal;font-weight:normal;font-size:14.7278986px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;writing-mode:vertical-lr;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.36819747" x="78.042679" y="162.81319" id="text6168" transform="scale(1.3916125,0.71859084)"><tspan sodipodi:role="line" x="162.81319" y="78.042679" id="tspan6166" style="stroke-width:0.36819747"><tspan x="78.042679" y="162.81319" style="font-weight:bold;font-size:31.41951942px;writing-mode:vertical-lr;stroke-width:0.36819747" id="tspan6164">$5 M</tspan></tspan></text>
+  </g>
+</svg>
