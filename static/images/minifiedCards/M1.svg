@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="210mm" height="297mm" version="1.1" viewBox="28.424 38.615 161.77 211.67" xmlns="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+<defs>
+<pattern id="a" width="10" height="10" patternTransform="translate(0) scale(5)" patternUnits="userSpaceOnUse">
+<circle cx="2.567" cy=".81" r=".05"/>
+<circle cx="3.048" cy="2.33" r=".05"/>
+<circle cx="4.418" cy="2.415" r=".05"/>
+<circle cx="1.844" cy="3.029" r=".05"/>
+<circle cx="6.08" cy="1.363" r=".05"/>
+<circle cx="5.819" cy="4.413" r=".05"/>
+<circle cx="4.305" cy="4.048" r=".05"/>
+<circle cx="5.541" cy="3.045" r=".05"/>
+<circle cx="4.785" cy="5.527" r=".05"/>
+<circle cx="2.667" cy="5.184" r=".05"/>
+<circle cx="7.965" cy="1.448" r=".05"/>
+<circle cx="7.047" cy="5.049" r=".05"/>
+<circle cx="4.34" cy=".895" r=".05"/>
+<circle cx="7.125" cy=".34" r=".05"/>
+<circle cx="9.553" cy="1.049" r=".05"/>
+<circle cx="7.006" cy="2.689" r=".05"/>
+<circle cx="8.909" cy="2.689" r=".05"/>
+<circle cx="9.315" cy="4.407" r=".05"/>
+<circle cx="7.82" cy="3.87" r=".05"/>
+<circle cx="8.27" cy="5.948" r=".05"/>
+<circle cx="7.973" cy="7.428" r=".05"/>
+<circle cx="9.342" cy="8.072" r=".05"/>
+<circle cx="8.206" cy="9.315" r=".05"/>
+<circle cx="9.682" cy="9.475" r=".05"/>
+<circle cx="9.688" cy="6.186" r=".05"/>
+<circle cx="3.379" cy="6.296" r=".05"/>
+<circle cx="2.871" cy="8.204" r=".05"/>
+<circle cx="4.59" cy="8.719" r=".05"/>
+<circle cx="3.181" cy="9.671" r=".05"/>
+<circle cx="5.734" cy="7.315" r=".05"/>
+<circle cx="6.707" cy="6.513" r=".05"/>
+<circle cx="5.73" cy="9.67" r=".05"/>
+<circle cx="6.535" cy="8.373" r=".05"/>
+<circle cx="4.37" cy="7.154" r=".05"/>
+<circle cx=".622" cy="7.25" r=".05"/>
+<circle cx=".831" cy="5.679" r=".05"/>
+<circle cx="1.257" cy="8.519" r=".05"/>
+<circle cx="1.989" cy="6.877" r=".05"/>
+<circle cx=".374" cy="3.181" r=".05"/>
+<circle cx="1.166" cy="1.664" r=".05"/>
+<circle cx="1.151" cy=".093" r=".05"/>
+<circle cx="1.151" cy="10.093" r=".05"/>
+<circle cx="1.302" cy="4.451" r=".05"/>
+<circle cx="3.047" cy="3.763" r=".05"/>
+</pattern>
+</defs>
+<metadata>
+<rdf:RDF>
+<cc:Work rdf:about="">
+<dc:format>image/svg+xml</dc:format>
+<dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+<dc:title/>
+</cc:Work>
+</rdf:RDF>
+</metadata>
+<g transform="translate(4.9893 3.931)" fill="#ffe476">
+<rect x="23.435" y="34.685" width="161.77" height="211.67" ry="15.119" fill="#ffe476" stroke="#000" stroke-width="1.0583"/>
+</g>
+<rect x="44.187" y="53.188" width="130.21" height="181.48" rx="0" ry="5.6922" fill="url(#a)" stroke="#000" stroke-dasharray="3.52777778, 1.76388889, 0.88194444, 1.76388889" stroke-width="1.7639"/>
+<g transform="translate(3.4018 7.6351)">
+<circle transform="translate(1.5875 -3.7042)" cx="48.23" cy="58.497" r="19.655" fill="#ffeda2" stroke="#000" stroke-width="1.0583"/>
+<text transform="matrix(.83776 0 0 1.1937 1.5875 -3.7042)" x="39.251858" y="53.991329" fill="#000000" font-family="sans-serif" font-size="12.633px" letter-spacing="0px" stroke-width=".31582" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="39.251858" y="53.991329" stroke-width=".31582"><tspan x="39.251858" y="53.991329" font-size="13.475px" font-weight="bold" stroke-width=".31582">$1 M</tspan></tspan></text>
+</g>
+<g transform="translate(115.21 170.52)">
+<circle transform="translate(1.5875 -3.7042)" cx="48.23" cy="58.497" r="19.655" fill="#ffeda2" stroke="#000" stroke-width="1.0583"/>
+<text transform="matrix(.83776 0 0 1.1937 1.5875 -3.7042)" x="39.251858" y="53.991329" fill="#000000" font-family="sans-serif" font-size="12.633px" letter-spacing="0px" stroke-width=".31582" word-spacing="0px" style="line-height:1.25" xml:space="preserve"><tspan x="39.251858" y="53.991329" stroke-width=".31582"><tspan x="39.251858" y="53.991329" font-size="13.475px" font-weight="bold" stroke-width=".31582">$1 M</tspan></tspan></text>
+</g>
+<ellipse cx="110.6" cy="146.17" rx="46.959" ry="42.469" fill="#ffeda2" stroke="#000" stroke-width="3.5278"/>
+<text transform="scale(1.3916 .71859)" x="78.042679" y="162.81319" fill="#000000" font-family="sans-serif" font-size="14.728px" letter-spacing="0px" stroke-width=".3682" word-spacing="0px" writing-mode="vertical-lr" style="line-height:1.25" xml:space="preserve"><tspan x="162.81319" y="78.042679" stroke-width=".3682"><tspan x="78.042679" y="162.81319" font-size="31.42px" font-weight="bold" stroke-width=".3682" writing-mode="vertical-lr">$1 M</tspan></tspan></text>
+</svg>
