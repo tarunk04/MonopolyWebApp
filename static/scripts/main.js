@@ -59,7 +59,7 @@
 
         socket.on('modify_lobby',function(data){
             modifiedHTML = '<h2>Players in lobby: </h2>'
-            for(i in data){ modifiedHTML+= '<h4>'+data[i]+'</h4>';}
+            for(i in data){ modifiedHTML+= '<h4>'+data[i][0]+'</h4>';}
             document.getElementById("users").innerHTML = modifiedHTML;
             if (host)document.getElementById("lobby").getElementsByTagName("button")[0].style.display="block";
             console.log('Players in lobby: '+data);
@@ -441,17 +441,12 @@
                     playerClass = "playerTab ";
                     if(otherPlayer)playerClass += "otherPlayerTab";
                     else playerClass += "selfPlayerTab";
-                    if(otherPlayer)isactive='';
-                    else isactive='active';
-                    tabHTML+='<li class="'+isactive+'"><a id="'+player+'tab" class = "'+ playerClass+'"data-toggle="tab" data-target="#board" data-slide-to="'+player[1]+'">'+data['players'][player]['username']+'</a></li>';
+                    tabHTML+='<li class="active"><a href="#'+player+'" id="'+player+'tab" class = "'+ playerClass+'"data-toggle="tab" data-target="#'+player+', #board" data-slide-to="'+player[1]+'">'+data['players'][player]['username']+'</a></li>';
                 }
                 // console.log("This is the inner html",tabHTML);
                 $("#tabsInner").html(tabHTML);
                 if(tabHTML!="")initialTabSetup=true;
             }
-
-            $(".otherPlayerTab").parents("li").removeClass("active");
-            $(".selfPlayerTab").parents("li").addClass("active");
 
             for(player in data['players']){
                 
