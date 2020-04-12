@@ -303,14 +303,29 @@ class Player():
             return 0
         jsn = player.wantToPlayJSN(socketio)
         if not jsn:
+            #Say propertySet of color A is taken from player Y. If no cards exist in the propertySet of color A of player X, then simply add all the cards to the set. Otherwise first shift all the cards to the XX propertySet of player X, and then do the above. 
+            existingPropertySet = self.findPropertySetByColor(propertySet.color)
+            if existingPropertySet.currentSetSize()==0:
+                print('Property set of given color empty. Task easy!!')
+            else:
+                print(f'Moving existing cards of {propertySet.color} color to the extra set!!')
+                extraPropertySet = self.findPropertySetByColor('XX')
+                for card in existingPropertySet.propertyCards:
+                    extraPropertySet.propertyCards.append(card)
+                existingPropertySet.propertyCards.clear()
+                if existingPropertySet.hotel:
+                    existingPropertySet.hotel =None #TODO: To handle
+                if existingPropertySet.house:
+                    existingPropertySet.house =None #TODO: TO handle
+
             for _ in range(propertySet.currentSetSize()):
-                self.exchangeBuffer.append(propertySet.propertyCards.pop())
+                existingPropertySet.propertyCards.append(propertySet.propertyCards.pop())
 
             if propertySet.hotel:
-                self.exchangeBuffer.append(propertySet.hotel)
+                existingPropertySet.hotel = propertySet.hotel
                 propertySet.hotel = None
             if propertySet.house:
-                self.exchangeBuffer.append(propertySet.house)
+                existingPropertySet.house = propertySet.house
                 propertySet.house = None
             return True
         else:
