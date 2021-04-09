@@ -18,3 +18,7 @@ For linux:
 5. Install dependencies:
 `pip install -r requirements.txt`
 6. Run the server: `python app.py`
+
+Below is a sample run:
+
+![image](https://user-images.githubusercontent.com/22846927/114155306-f7d6be80-993e-11eb-9ad5-ff2a132ad038.png)
